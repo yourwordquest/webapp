@@ -1,0 +1,14 @@
+<svg width="1024" height="1024" viewBox="0 0 200 200">
+    <g transform="translate(100,100)" stroke="#ffffff">
+        <path d="M0 0-70 70A99 99 0 0 1-70-70Z" fill="#fff"/>
+        <path d="M0 0 70-70A99 99 0 0 1 70 70Z" fill="#fff"/>
+        <path d="M0 0 70 70A99 99 0 0 1-70 70Z" fill="#fff"/>
+    </g>
+    <circle cx="100" cy="100" r="95" fill="transparent" stroke="#81D4FA" stroke-width="8" />
+    <circle cx="100" cy="100" r="65" fill="transparent" stroke="#4FC3F7" stroke-width="10" />
+    <circle cx="100" cy="100" r="40" fill="transparent" stroke="#03A9F4" stroke-width="12" />
+
+    <g transform="translate(100,100)"  stroke="#ffffff">
+        <path d="M0 0-70-70A99 99 0 0 1 70-70Z" fill="#ffffff"/>
+    </g>
+</svg>
