@@ -17,6 +17,7 @@ export const Flex = styled.div<FlexProps>`
     align-items: ${(props) => (props.align ? props.align : "stretch")};
     flex-basis: ${(props) => (props.equal ? "0" : "inherit")};
     flex-grow: ${(props) => (props.equal || props.autoGrow ? "1" : "initial")};
+    box-sizing: border-box;
 
     @media (max-width: ${({ breakAt }) => (breakAt ? breakAt : 0)}px) {
         flex-direction: column;
