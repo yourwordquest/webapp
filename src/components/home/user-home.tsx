@@ -3,12 +3,12 @@ import styled from "styled-components"
 import { FlexColumn } from "components/shared/containers"
 import { Text } from "@fluentui/react"
 import { PromiseStats } from "components/charts/promises"
-import { primaryColor, TitleFonts } from "data/theme"
+import { MobileBreakPoint, primaryColor, TitleFonts } from "data/theme"
 import { Link } from "react-router-dom"
 
 export function UserHome() {
     return (
-        <FlexColumn autoGrow centerAt={800} justify="flex-start">
+        <FlexColumn autoGrow centerAt={MobileBreakPoint} justify="flex-start">
             <Banner>
                 <img alt="" src="/assets/Simple_Globe.svg" />
                 The World
