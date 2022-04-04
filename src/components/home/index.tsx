@@ -7,7 +7,7 @@ import { Label, Pivot, PivotItem } from "@fluentui/react"
 export function Home() {
     return (
         <ConstrainedBody maxWidth={1400}>
-            <Flex style={{ padding: "1em 0.5em" }} breakAt={800} equal>
+            <Flex breakAt={900} equal>
                 <OurHome />
                 <Break size={0.3} style={{ backgroundColor: "#f1f1f1", height: "auto", margin: "0.5em" }} />
                 <UserHome />

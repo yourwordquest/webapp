@@ -6,6 +6,7 @@ import { NavBarHeight, primaryColor } from "data/theme"
 import { Link } from "react-router-dom"
 import { observer } from "mobx-react"
 import { GlobalContext, GlobalState } from "data/state"
+import { LocationInput } from "components/shared/locationInput"
 
 interface NavBarState {
     searchBoxOpen: boolean
@@ -42,7 +43,7 @@ export class NavBar extends React.Component<any, NavBarState> {
             ],
         }
 
-        if (state.appWidth <= 800) {
+        if (state.appWidth <= 900) {
             menuProps.items.unshift({
                 key: "contribute",
                 text: "Contribute",
@@ -63,13 +64,19 @@ export class NavBar extends React.Component<any, NavBarState> {
                         <Link to="/">
                             <img className="logo" src="/logo.png" alt="" />
                         </Link>
-                        <Break />
+                        <Break size={0.5} />
                         <TextField
+                            type="search"
                             className="search-box"
                             placeholder="Search for people, promises, institutions..."
                             underlined
-                            iconProps={{ iconName: "Search" }}
+                            iconProps={{ iconName: "Search", style: { color: primaryColor, cursor: "pointer" } }}
                             style={{ flexGrow: 1 }}
+                        />
+                        <Break size={0.5} />
+                        <LocationInput
+                            location={{ name: "The World", icon: "/assets/Simple_Globe.svg" }}
+                            minimalView={state.appWidth <= 900}
                         />
                     </Flex>
                     <Flex align="center" className="menu">
@@ -109,7 +116,8 @@ const StyleNavBar = styled.nav`
         width: auto;
     }
     .search-box {
-        width: 50%;
+        width: auto;
+        flex-grow: 1;
     }
 
     .menu {
@@ -118,14 +126,9 @@ const StyleNavBar = styled.nav`
         }
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
         .menu {
             display: none;
-        }
-
-        .search-box {
-            width: auto;
-            flex-grow: 1;
         }
     }
 `
