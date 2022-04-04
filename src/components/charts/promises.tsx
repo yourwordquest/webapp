@@ -71,8 +71,8 @@ const PromiseStat = styled.div<PromiseStatProps>`
     position: relative;
     border-left: 4px solid ${({ color }) => color};
     border-bottom: 1px solid ${({ color }) => color};
-    margin-bottom: 0.1em;
-    height: 24px;
+    margin-bottom: 0.3em;
+    height: 32px;
     &::before {
         content: " ";
         left: 0;
