@@ -38,11 +38,16 @@ export function PromiseStats({ data, height }: PromisesPieChartProps) {
             <Break />
             <FlexColumn autoGrow justify="space-around">
                 <PromiseStat color={primaryColor} percentage={100}>
-                    1078 Known Promises
+                    <label>
+                        <strong>1078</strong> Known Promises
+                    </label>
                 </PromiseStat>
                 {chartData.map((item) => (
                     <PromiseStat key={item.name} percentage={(item.value / total) * 100} color={item.color}>
-                        <strong>{item.value}</strong>&nbsp;{item.name}
+                        <label>
+                            <strong>{item.value}</strong>
+                            {item.name}
+                        </label>
                     </PromiseStat>
                 ))}
             </FlexColumn>
@@ -67,9 +72,8 @@ const PromiseStat = styled.div<PromiseStatProps>`
     position: relative;
     border-left: 4px solid ${({ color }) => color};
     border-bottom: 1px solid ${({ color }) => color};
-    padding: 0.3em 0.5em;
     margin-bottom: 0.1em;
-    z-index: 2;
+    height: 24px;
     &::before {
         content: " ";
         left: 0;
@@ -79,6 +83,30 @@ const PromiseStat = styled.div<PromiseStatProps>`
         background-color: ${({ color }) => color}44;
         position: absolute;
         z-index: 1;
+    }
+    label {
+        left: 0;
+        top: 0;
+        height: 100%;
+        position: absolute;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        padding: 0 0.5em;
+        width: calc(100% - 1em);
+        strong {
+            margin-right: 0.5em;
+        }
+    }
+    .info {
+        cursor: pointer;
+        color: ${primaryColor};
+        padding: 3px;
+        border-radius: 3px;
+        &:hover {
+            color: #ffffff;
+            background-color: ${primaryColor};
+        }
     }
 `
 
