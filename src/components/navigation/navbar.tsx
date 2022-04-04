@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { CommandButton, IconButton, IContextualMenuProps, TextField } from "@fluentui/react"
 import { Break, Flex } from "components/shared/containers"
-import { NavBarHeight, primaryColor } from "data/theme"
+import { MobileBreakPoint, NavBarHeight, primaryColor } from "data/theme"
 import { Link } from "react-router-dom"
 import { observer } from "mobx-react"
 import { GlobalContext, GlobalState } from "data/state"
@@ -43,7 +43,7 @@ export class NavBar extends React.Component<any, NavBarState> {
             ],
         }
 
-        if (state.appWidth <= 900) {
+        if (state.appWidth <= MobileBreakPoint) {
             menuProps.items.unshift({
                 key: "contribute",
                 text: "Contribute",
@@ -76,7 +76,7 @@ export class NavBar extends React.Component<any, NavBarState> {
                         <Break size={0.5} />
                         <LocationInput
                             location={{ name: "The World", icon: "/assets/Simple_Globe.svg" }}
-                            minimalView={state.appWidth <= 900}
+                            minimalView={state.appWidth <= MobileBreakPoint}
                         />
                     </Flex>
                     <Flex align="center" className="menu">
@@ -126,7 +126,7 @@ const StyleNavBar = styled.nav`
         }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: ${MobileBreakPoint}px) {
         .menu {
             display: none;
         }
