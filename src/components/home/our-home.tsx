@@ -1,19 +1,17 @@
 import React from "react"
-import { Break, Flex, FlexColumn } from "components/shared/containers"
+import { Break, FlexColumn } from "components/shared/containers"
 import { Text } from "@fluentui/react"
-import { ScalableImage } from "components/shared/images"
+import { observer } from "mobx-react"
+import styled from "styled-components"
+import { primaryColor, TitleFonts } from "data/theme"
 
-export function OurHome() {
+export const OurHome = observer(() => {
     return (
         <FlexColumn autoGrow centerAt={800}>
-            <Flex justify="flex-start" align="center">
-                <ScalableImage maxHeight={120} minHeight={60} relativeHeight={"10vw"} alt="" src="/icon.svg" />
-                <Break />
-                <FlexColumn autoGrow>
-                    <Text variant="superLarge">YourWord.quest</Text>
-                    <Text variant="xLarge">In quest for accountability for you; that's our promise to you</Text>
-                </FlexColumn>
-            </Flex>
+            <Banner>
+                <img alt="" src="/icon.svg" />
+                <span>YourWord.Quest</span>
+            </Banner>
 
             <Text variant="xLarge">We track promises made to humans by humans; for the sake of humanity.</Text>
             <Break size={0.5} />
@@ -31,4 +29,18 @@ export function OurHome() {
             </Text>
         </FlexColumn>
     )
-}
+})
+
+const Banner = styled.div`
+    display: flex;
+    color: ${primaryColor};
+    font-family: ${TitleFonts};
+    font-size: 2em;
+    font-style: oblique;
+    align-items: center;
+    margin-bottom: 16px;
+    img {
+        margin-right: 5px;
+        height: 40px;
+    }
+`
