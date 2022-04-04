@@ -57,9 +57,8 @@ export function PromiseStats({ data, height }: PromisesPieChartProps) {
 
 const StyledPromiseContainer = styled(Flex)`
     padding: 0.5em 0.5em;
-    margin: 0.5em;
+    margin: 0.5em 0;
     background-color: #fafafa;
-    border-radius: 0.2em;
     width: 100%;
 `
 
