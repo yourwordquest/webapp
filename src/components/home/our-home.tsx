@@ -9,7 +9,10 @@ export function OurHome() {
             <Flex justify="flex-start" align="center">
                 <ScalableImage maxHeight={120} minHeight={60} relativeHeight={"10vw"} alt="" src="/icon.svg" />
                 <Break />
-                <Text variant="xxLargePlus">Welcome to YodSay!</Text>
+                <FlexColumn autoGrow>
+                    <Text variant="superLarge">YourWord.quest</Text>
+                    <Text variant="xLarge">In quest for accountability for you; that's our promise to you</Text>
+                </FlexColumn>
             </Flex>
 
             <Text variant="xLarge">We track promises made to humans by humans; for the sake of humanity.</Text>
