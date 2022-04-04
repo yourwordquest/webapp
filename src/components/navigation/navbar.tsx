@@ -102,7 +102,7 @@ const NavBarContainer = styled.nav`
 
 const StyleNavBar = styled.nav`
     height: ${NavBarHeight};
-    margin: 1em;
+    margin: 1em 0.5em;
     padding: 0.4em 1em;
     border-radius: 1em;
     box-sizing: border-box;
