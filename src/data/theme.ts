@@ -13,10 +13,8 @@ export const promiseColors = {
     broken: "#b71c1c",
 }
 
-export const TextFonts =
-    "'Roboto', 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif"
-const TitleFonts =
-    "'Lora', 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif"
+export const TextFonts = "-apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif"
+export const TitleFonts = "'Lora', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif"
 
 // Partly generated with
 // https://fluentuipr.z22.web.core.windows.net/heads/master/theming-designer/index.html
