@@ -37,7 +37,8 @@ interface ConstrainedBodyProps extends React.DetailedHTMLProps<React.HTMLAttribu
 }
 
 export const ConstrainedBody = styled.div<ConstrainedBodyProps>`
-    padding-top: 1.5em;
+    padding: 1.5em 0.5em 0.5em;
+    box-sizing: border-box;
     @media (min-width: ${(props) => props.maxWidth}px) {
         padding-right: calc((100% - ${(props) => props.maxWidth}px) / 2);
         padding-left: calc((100% - ${(props) => props.maxWidth}px) / 2);
