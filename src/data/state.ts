@@ -1,6 +1,7 @@
 import { createContext } from "react"
 import { makeAutoObservable, runInAction } from "mobx"
 import { uniqueId } from "utils/random"
+import { toNearest } from "utils/numbers"
 
 interface FetchProps extends RequestInit {
     json?: any
@@ -23,10 +24,16 @@ export class GlobalState {
     constructor() {
         makeAutoObservable(this)
 
+        this.appWidth = toNearest(window.innerWidth, 10)
+        // Observe window resize
+        window.addEventListener("resize", this.handleResize.bind(this))
+
         /* We use this channel to communicate changes across tabs. */
         this.channel = new BroadcastChannel("tab-sync")
         this.channel.addEventListener("message", this.receiveMessage.bind(this), true)
     }
+
+    appWidth: number
 
     channel: BroadcastChannel
 
@@ -50,6 +57,16 @@ export class GlobalState {
 
     private receiveMessage(event: MessageEvent<"logout">) {
         if (event.data === "logout") this.logout()
+    }
+
+    private handleResize(event: UIEvent) {
+        // Use to nearest to avoid too many updates
+        const width = toNearest(window.innerWidth, 10)
+        if (width !== this.appWidth) {
+            runInAction(() => {
+                this.appWidth = width
+            })
+        }
     }
 
     startLoading(item: string) {

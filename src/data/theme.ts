@@ -13,7 +13,7 @@ export const promiseColors = {
     broken: "#b71c1c",
 }
 
-const TextFonts =
+export const TextFonts =
     "'Roboto', 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif"
 const TitleFonts =
     "'Lora', 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif"
@@ -52,7 +52,7 @@ export const FluentTheme = createTheme({
         smallPlus: { fontFamily: TextFonts },
         medium: { fontFamily: TextFonts },
         mediumPlus: { fontFamily: TextFonts },
-        large: { fontFamily: TitleFonts },
+        large: { fontFamily: TextFonts },
         xLarge: { fontFamily: TitleFonts },
         xxLarge: { fontFamily: TitleFonts },
         xxLargePlus: { fontFamily: TitleFonts },
