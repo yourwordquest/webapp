@@ -1,7 +1,6 @@
 import { createTheme } from "@fluentui/react"
 
 export const NavBarHeight = 60
-export const SideBarWidth = 100
 export const MobileBreakPoint = 900
 
 export const primaryColor = "#03A9F4"

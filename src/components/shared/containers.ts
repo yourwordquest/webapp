@@ -1,4 +1,3 @@
-import { NavBarHeight, SideBarWidth } from "data/theme"
 import React from "react"
 import styled from "styled-components"
 
@@ -49,10 +48,6 @@ export const HideAt = styled.div<{ maxWidth: number }>`
     @media (max-width: ${(props) => props.maxWidth}px) {
         display: none;
     }
-`
-
-export const BodyContainer = styled.div`
-    margin: ${NavBarHeight + 20}px 10px 20px ${SideBarWidth + 10}px;
 `
 
 interface BreakProps {
