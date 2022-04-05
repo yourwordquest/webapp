@@ -39,11 +39,18 @@ export class GlobalState {
 
     toastMessages: Map<string, ToastDefinition> = new Map()
 
+    authShowing: boolean = false
+
     private loadingItems: string[] = []
 
     get loading(): boolean {
         return this.loadingItems.length > 0
     }
+
+    toggleAuthView = () =>
+        runInAction(() => {
+            this.authShowing = !this.authShowing
+        })
 
     toast({ message, autoHideDuration = 6000, type = "info" }: ToastDefinition) {
         runInAction(() => {
