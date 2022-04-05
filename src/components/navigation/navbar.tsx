@@ -7,6 +7,7 @@ import { Link } from "react-router-dom"
 import { observer } from "mobx-react"
 import { GlobalContext, GlobalState } from "data/state"
 import { LocationInput } from "components/shared/locationInput"
+import { withRouter, RoutedProps } from "utils/routing"
 
 interface NavBarState {
     searchBoxOpen: boolean
@@ -14,9 +15,9 @@ interface NavBarState {
 }
 
 @observer
-export class NavBar extends React.Component<any, NavBarState> {
+class RoutedNavBar extends React.Component<RoutedProps, NavBarState> {
     static contextType = GlobalContext
-    constructor(props: any) {
+    constructor(props: RoutedProps) {
         super(props)
 
         this.state = {
@@ -28,17 +29,31 @@ export class NavBar extends React.Component<any, NavBarState> {
     render() {
         const state: GlobalState = this.context
 
+        const { navigate } = this.props
+
         const menuProps: IContextualMenuProps = {
             items: [
                 {
                     key: "about",
                     text: "About Us",
                     iconProps: { iconName: "Info" },
+                    href: "/about",
+                    onClick: (evt) => {
+                        evt?.preventDefault()
+                        evt?.stopPropagation()
+                        navigate("/about")
+                    },
                 },
                 {
                     key: "contact",
                     text: "Contact Us",
                     iconProps: { iconName: "Message" },
+                    href: "/contact",
+                    onClick: (evt) => {
+                        evt?.preventDefault()
+                        evt?.stopPropagation()
+                        navigate("/contact")
+                    },
                 },
             ],
         }
@@ -48,12 +63,19 @@ export class NavBar extends React.Component<any, NavBarState> {
                 key: "contribute",
                 text: "Contribute",
                 iconProps: { iconName: "CaloriesAdd" },
+                href: "/contribute",
+                onClick: (evt) => {
+                    evt?.preventDefault()
+                    evt?.stopPropagation()
+                    navigate("/contribute")
+                },
             })
 
             menuProps.items.push({
                 key: "user",
                 text: "Login/Sign Up",
                 iconProps: { iconName: "Contact" },
+                onClick: state.toggleAuthView,
             })
         }
 
@@ -80,8 +102,14 @@ export class NavBar extends React.Component<any, NavBarState> {
                         />
                     </Flex>
                     <Flex align="center" className="menu">
-                        <CommandButton text="Contribute" iconProps={{ iconName: "CaloriesAdd" }} />
-                        <CommandButton text="Login/Sign Up" iconProps={{ iconName: "Contact" }} />
+                        <Link to="/contribute">
+                            <CommandButton text="Contribute" iconProps={{ iconName: "CaloriesAdd" }} />
+                        </Link>
+                        <CommandButton
+                            onClick={state.toggleAuthView}
+                            text="Login/Sign Up"
+                            iconProps={{ iconName: "Contact" }}
+                        />
                     </Flex>
                     <IconButton iconProps={{ iconName: "CollapseMenu" }} menuProps={menuProps} />
                 </StyleNavBar>
@@ -89,6 +117,8 @@ export class NavBar extends React.Component<any, NavBarState> {
         )
     }
 }
+
+export const NavBar = withRouter(RoutedNavBar)
 
 const NavBarContainer = styled.nav`
     top: 1em;

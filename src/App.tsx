@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Home } from "components/home"
 import { GlobalStyle } from "styles"
 import { NavBar } from "components/navigation/navbar"
@@ -15,7 +15,9 @@ function App() {
                 <ThemeProvider theme={FluentTheme}>
                     <GlobalStyle />
                     <NavBar />
-                    <Home />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                    </Routes>
                 </ThemeProvider>
             </GlobalContext.Provider>
         </BrowserRouter>
