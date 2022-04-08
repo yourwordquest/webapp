@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { CommandButton, IconButton, IContextualMenuProps, TextField } from "@fluentui/react"
+import { CommandButton, IconButton, IContextualMenuProps, Spinner, SpinnerSize, TextField } from "@fluentui/react"
 import { Break, Flex } from "components/shared/containers"
 import { MobileBreakPoint, NavBarHeight, primaryColor } from "data/theme"
 import { Link } from "react-router-dom"
@@ -84,7 +84,8 @@ class RoutedNavBar extends React.Component<RoutedProps, NavBarState> {
                 <StyleNavBar>
                     <Flex autoGrow>
                         <Link to="/">
-                            <img className="logo" src="/logo.png" alt="" />
+                            {state.loading && <Spinner size={SpinnerSize.large} />}
+                            {!state.loading && <img className="logo" src="/logo.png" alt="" />}
                         </Link>
                         <Break size={0.5} />
                         <TextField
@@ -144,6 +145,12 @@ const StyleNavBar = styled.nav`
     .logo {
         height: 32px;
         width: auto;
+    }
+    /* Spinner same size as the log */
+    .circle-140 {
+        height: 32px;
+        width: 32px;
+        /* border-width: 3px; */
     }
     .search-box {
         width: auto;
