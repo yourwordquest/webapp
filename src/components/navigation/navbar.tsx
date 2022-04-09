@@ -8,6 +8,9 @@ import { observer } from "mobx-react"
 import { GlobalContext, GlobalState } from "data/state"
 import { LocationInput } from "components/shared/locationInput"
 import { withRouter, RoutedProps } from "utils/routing"
+import { flag_link } from "data/location"
+import { CCA2_CCA3 } from "data/cca_map"
+import { LOCATION_LOADING } from "constans"
 
 interface NavBarState {
     searchBoxOpen: boolean
@@ -15,7 +18,7 @@ interface NavBarState {
 }
 
 @observer
-class RoutedNavBar extends React.Component<RoutedProps, NavBarState> {
+class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, NavBarState> {
     static contextType = GlobalContext
     constructor(props: RoutedProps) {
         super(props)
@@ -23,6 +26,58 @@ class RoutedNavBar extends React.Component<RoutedProps, NavBarState> {
         this.state = {
             searchBoxOpen: false,
             mobileWidth: false,
+        }
+    }
+
+    loadLocation() {
+        const {
+            search: { loc },
+        } = this.props
+        const state: GlobalState = this.context
+
+        const load_based_on_ip_location = () => {
+            state
+                .fetch<{ country_code: string }>("/location")
+                .then(({ data }) => {
+                    let location_id = "earth"
+                    if (data && data.country_code) {
+                        const cca3 = CCA2_CCA3[data.country_code]
+                        if (cca3) {
+                            location_id = `country:${cca3}`.toLocaleLowerCase()
+                        }
+                    }
+                    state.setLocation(location_id)
+                })
+                .finally(state.promiseLoadingHelper(LOCATION_LOADING))
+        }
+
+        if (loc) {
+            // Avoid loading a non-existent location
+            state
+                .fetch<{ success: boolean }>(`/location/${loc}/check`.toLocaleLowerCase())
+                .then(({ data }) => {
+                    if (data && data.success) {
+                        // Load the location set on URL
+                        state.setLocation(loc.toLocaleLowerCase())
+                        return
+                    }
+                    load_based_on_ip_location()
+                })
+                .finally(state.promiseLoadingHelper(LOCATION_LOADING))
+            return
+        }
+        load_based_on_ip_location()
+    }
+
+    componentDidMount() {
+        this.loadLocation()
+    }
+
+    componentDidUpdate(prevProps: RoutedProps<any, { loc?: string }>) {
+        const prev_loc = prevProps.search.loc
+        const current_loc = this.props.search.loc
+        if (prev_loc !== current_loc) {
+            this.loadLocation()
         }
     }
 
@@ -79,6 +134,9 @@ class RoutedNavBar extends React.Component<RoutedProps, NavBarState> {
             })
         }
 
+        const location_name = state.isLoading("loading-location") ? "Loading..." : `${state.locations?.current.Name || ""}`
+        const location_icon = flag_link(state.locations?.current)
+
         return (
             <NavBarContainer>
                 <StyleNavBar>
@@ -98,7 +156,7 @@ class RoutedNavBar extends React.Component<RoutedProps, NavBarState> {
                         />
                         <Break size={0.5} />
                         <LocationInput
-                            location={{ name: "The World", icon: "/assets/Simple_Globe.svg" }}
+                            location={{ name: location_name, icon: location_icon }}
                             minimalView={state.appWidth <= MobileBreakPoint}
                         />
                     </Flex>

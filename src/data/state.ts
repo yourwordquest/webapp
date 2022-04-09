@@ -2,6 +2,9 @@ import { createContext } from "react"
 import { makeAutoObservable, runInAction } from "mobx"
 import { uniqueId } from "utils/random"
 import { toNearest } from "utils/numbers"
+import { make_api_url } from "utils/routing"
+import { LocationRelations, Locations } from "./location"
+import { LOCATION_LOADING } from "constans"
 
 interface FetchProps extends RequestInit {
     json?: any
@@ -40,6 +43,8 @@ export class GlobalState {
     toastMessages: Map<string, ToastDefinition> = new Map()
 
     authShowing: boolean = false
+
+    locations?: Locations
 
     private loadingItems: string[] = []
 
@@ -101,6 +106,19 @@ export class GlobalState {
         }
     }
 
+    setLocation(locationId: string) {
+        this.fetch<LocationRelations>(`/location/${locationId}/relations`)
+            .then(({ data }) => {
+                if (data) {
+                    // Set the location and load details
+                    runInAction(() => {
+                        this.locations = new Locations(data)
+                    })
+                }
+            })
+            .finally(this.promiseLoadingHelper(LOCATION_LOADING))
+    }
+
     logout(propagate?: boolean) {}
 
     async fetch<T = { success: boolean; message: string }>(
@@ -127,9 +145,9 @@ export class GlobalState {
         }
 
         try {
-            const response = await fetch(path, {
+            const response = await fetch(make_api_url(path), {
                 mode: "cors",
-                credentials: "include",
+                credentials: "omit",
                 headers,
                 method,
                 body,
