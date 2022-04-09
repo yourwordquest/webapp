@@ -31,7 +31,7 @@ export class Locations {
         for (let i = 0; i < this.children.length; i++) {
             const location = this.children[i]
             if (!location.LocationType) continue
-            if (response[location.LocationType]) {
+            if (!response[location.LocationType]) {
                 response[location.LocationType] = []
             }
             response[location.LocationType].push(location)
