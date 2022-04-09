@@ -1,27 +1,34 @@
 import { FontIcon } from "@fluentui/react"
+import { LOCATION_LOADING } from "constans"
+import { flag_link } from "data/location"
+import { GlobalContext, GlobalState } from "data/state"
 import { FluentTheme, primaryColor } from "data/theme"
+import { observer } from "mobx-react"
 import React from "react"
 import styled from "styled-components"
+import { withRouter, RoutedProps } from "utils/routing"
 import { Break } from "./containers"
 
-interface LocationProps {
-    name: string
-    icon: string
-}
-
-interface LocationInputProps {
-    location: LocationProps
+interface LocationInputProps extends RoutedProps {
     minimalView: boolean
 }
 
-export class LocationInput extends React.Component<LocationInputProps> {
+@observer
+class RoutedLocationInput extends React.Component<LocationInputProps> {
+    static contextType = GlobalContext
     render() {
-        const { location, minimalView } = this.props
+        const state: GlobalState = this.context
+        const { minimalView } = this.props
+        let name = state.locations?.current.Name || ""
+        const flag = flag_link(state.locations?.current)
+        if (state.isLoading(LOCATION_LOADING)) {
+            name = "Loading..."
+        }
         return (
             <StyledLocationInput className={minimalView ? "minimal" : "expanded"}>
-                <img alt={location.name} src={location.icon} />
+                <img alt="" src={flag} />
                 {!minimalView && <Break size={0.5} />}
-                {!minimalView && <span>{location.name}</span>}
+                {!minimalView && <span>{name}</span>}
                 {!minimalView && <Break size={0.3} />}
                 {!minimalView && <FontIcon className="expand-icon" iconName="ChevronDown" />}
             </StyledLocationInput>
@@ -60,3 +67,5 @@ const StyledLocationInput = styled.div`
         color: ${primaryColor};
     }
 `
+
+export const LocationInput = withRouter<LocationInputProps>(RoutedLocationInput)

@@ -8,7 +8,6 @@ import { observer } from "mobx-react"
 import { GlobalContext, GlobalState } from "data/state"
 import { LocationInput } from "components/shared/locationInput"
 import { withRouter, RoutedProps } from "utils/routing"
-import { flag_link } from "data/location"
 import { CCA2_CCA3 } from "data/cca_map"
 import { LOCATION_LOADING } from "constans"
 
@@ -134,9 +133,6 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
             })
         }
 
-        const location_name = state.isLoading("loading-location") ? "Loading..." : `${state.locations?.current.Name || ""}`
-        const location_icon = flag_link(state.locations?.current)
-
         return (
             <NavBarContainer>
                 <StyleNavBar>
@@ -155,10 +151,7 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                             style={{ flexGrow: 1 }}
                         />
                         <Break size={0.5} />
-                        <LocationInput
-                            location={{ name: location_name, icon: location_icon }}
-                            minimalView={state.appWidth <= MobileBreakPoint}
-                        />
+                        <LocationInput minimalView={state.appWidth <= MobileBreakPoint} />
                     </Flex>
                     <Flex align="center" className="menu">
                         <Link to="/contribute">
