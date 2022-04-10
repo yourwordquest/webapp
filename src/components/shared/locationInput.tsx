@@ -1,4 +1,4 @@
-import { FontIcon, Panel, PanelType } from "@fluentui/react"
+import { FontIcon, Panel, PanelType, DefaultButton } from "@fluentui/react"
 import { LOCATION_LOADING } from "constans"
 import { flag_link } from "data/location"
 import { GlobalContext, GlobalState } from "data/state"
@@ -8,7 +8,8 @@ import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { withRouter, RoutedProps } from "utils/routing"
-import { Break, Flex } from "./containers"
+import { plural } from "utils/text"
+import { Break, Flex, FlexColumn } from "./containers"
 
 interface LocationInputProps extends RoutedProps {
     minimalView: boolean
@@ -25,9 +26,34 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
         super(props)
 
         this.state = {
-            pickerOpen: true,
+            pickerOpen: false,
         }
     }
+
+    renderHeader = () => {
+        const state: GlobalState = this.context
+        let name = state.locations?.current.Name || ""
+        const flag = flag_link(state.locations?.current)
+        if (state.isLoading(LOCATION_LOADING)) {
+            name = "Loading..."
+        }
+        return (
+            <PickerTitle justify="flex-start" align="flex-start">
+                <Flex align="center" className="inner" autoGrow>
+                    <img alt="" src={flag} />
+                    {name}
+                </Flex>
+                {!state.isLoading(LOCATION_LOADING) && (
+                    <DefaultButton
+                        text="Done"
+                        iconProps={{ iconName: "CheckMark" }}
+                        onClick={() => this.setState({ pickerOpen: false })}
+                    />
+                )}
+            </PickerTitle>
+        )
+    }
+
     render() {
         const state: GlobalState = this.context
         const { minimalView } = this.props
@@ -61,14 +87,11 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
                     onDismiss={() => this.setState({ pickerOpen: false })}
                     type={PanelType.medium}
                     customWidth="50vw"
-                    headerText="Change Location"
+                    onRenderHeader={this.renderHeader}
+                    hasCloseButton={false}
                 >
                     <StyledLocationPicker>
                         <Break />
-                        <Flex align="center" className="title">
-                            <img alt="" src={flag} />
-                            {name}
-                        </Flex>
                         {has_parents && (
                             <>
                                 <Break />
@@ -86,9 +109,9 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
                             </>
                         )}
                         {children_types.map((locType) => (
-                            <>
+                            <FlexColumn key={locType}>
                                 <Break />
-                                <label>{locType || "Locations"}</label>
+                                <label>{plural(locType) || "Locations"}</label>
                                 <Break />
                                 <div className="children">
                                     {state.locations?.children_by_type[locType].map((loc) => (
@@ -98,7 +121,7 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
                                         </LocationPill>
                                     ))}
                                 </div>
-                            </>
+                            </FlexColumn>
                         ))}
                     </StyledLocationPicker>
                 </Panel>
@@ -107,23 +130,37 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
     }
 }
 
+const PickerTitle = styled(Flex)`
+    position: sticky;
+    background-color: #ffffff;
+    top: 0;
+    font-size: 1.6em;
+    padding-top: 0.5em;
+    .inner {
+        padding: 0.5em;
+    }
+    img {
+        height: 32px;
+        width: auto;
+        border-radius: 8px;
+        margin-right: 0.5em;
+    }
+    button {
+        padding: 0 0.5em;
+        margin-right: 0.5em;
+        color: ${primaryColor};
+        border: 1px solid ${primaryColor};
+        &:hover {
+            color: ${primaryColor};
+            background-color: ${primaryColor}22;
+        }
+    }
+`
+
 const StyledLocationPicker = styled.div`
     label {
         font-size: 1.5em;
         font-style: oblique;
-    }
-    .title {
-        position: sticky;
-        background-color: #ffffff;
-        top: 32px;
-        font-size: 1.6em;
-        padding: 0.5em 0;
-        img {
-            height: 32px;
-            width: auto;
-            border-radius: 8px;
-            margin-right: 0.5em;
-        }
     }
     .parents,
     .children {
