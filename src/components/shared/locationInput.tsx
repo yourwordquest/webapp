@@ -3,6 +3,7 @@ import { LOCATION_LOADING } from "constans"
 import { flag_link } from "data/location"
 import { GlobalContext, GlobalState } from "data/state"
 import { FluentTheme, primaryColor, secondaryColor } from "data/theme"
+import { runInAction } from "mobx"
 import { observer } from "mobx-react"
 import React from "react"
 import { Link } from "react-router-dom"
@@ -15,20 +16,9 @@ interface LocationInputProps extends RoutedProps {
     minimalView: boolean
 }
 
-interface State {
-    pickerOpen: boolean
-}
-
 @observer
-class RoutedLocationInput extends React.Component<LocationInputProps, State> {
+class RoutedLocationInput extends React.Component<LocationInputProps> {
     static contextType = GlobalContext
-    constructor(props: LocationInputProps) {
-        super(props)
-
-        this.state = {
-            pickerOpen: false,
-        }
-    }
 
     renderHeader = () => {
         const state: GlobalState = this.context
@@ -57,7 +47,6 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
     render() {
         const state: GlobalState = this.context
         const { minimalView } = this.props
-        const { pickerOpen } = this.state
         let name = state.locations?.current.Name || ""
         const flag = flag_link(state.locations?.current)
         if (state.isLoading(LOCATION_LOADING)) {
@@ -83,8 +72,12 @@ class RoutedLocationInput extends React.Component<LocationInputProps, State> {
                 </StyledLocationInput>
                 <Panel
                     isLightDismiss
-                    isOpen={pickerOpen}
-                    onDismiss={() => this.setState({ pickerOpen: false })}
+                    isOpen={state.locationPickerOpen}
+                    onDismiss={() =>
+                        runInAction(() => {
+                            state.locationPickerOpen = true
+                        })
+                    }
                     type={PanelType.medium}
                     customWidth="50vw"
                     onRenderHeader={this.renderHeader}

@@ -43,6 +43,7 @@ export class GlobalState {
     toastMessages: Map<string, ToastDefinition> = new Map()
 
     authShowing: boolean = false
+    locationPickerOpen: boolean = false
 
     locations?: Locations
 
