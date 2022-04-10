@@ -19,7 +19,7 @@ export class Home extends React.Component<any, HomeState> {
     constructor(props: any) {
         super(props)
         this.state = {
-            activeMobileView: "learn",
+            activeMobileView: "explore",
         }
     }
     render() {
