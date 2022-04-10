@@ -3,7 +3,6 @@ import { LOCATION_LOADING } from "constans"
 import { flag_link } from "data/location"
 import { GlobalContext, GlobalState } from "data/state"
 import { FluentTheme, primaryColor, secondaryColor } from "data/theme"
-import { runInAction } from "mobx"
 import { observer } from "mobx-react"
 import React from "react"
 import { Link } from "react-router-dom"
@@ -34,11 +33,7 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
                     {name}
                 </Flex>
                 {!state.isLoading(LOCATION_LOADING) && (
-                    <DefaultButton
-                        text="Done"
-                        iconProps={{ iconName: "CheckMark" }}
-                        onClick={() => this.setState({ pickerOpen: false })}
-                    />
+                    <DefaultButton text="Done" iconProps={{ iconName: "CheckMark" }} onClick={state.toggleLocationPicker} />
                 )}
             </PickerTitle>
         )
@@ -60,10 +55,7 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
         }
         return (
             <>
-                <StyledLocationInput
-                    onClick={() => this.setState({ pickerOpen: true })}
-                    className={minimalView ? "minimal" : "expanded"}
-                >
+                <StyledLocationInput onClick={state.toggleLocationPicker} className={minimalView ? "minimal" : "expanded"}>
                     <img alt="" src={flag} />
                     {!minimalView && <Break size={0.5} />}
                     {!minimalView && <span>{name}</span>}
@@ -73,11 +65,7 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
                 <Panel
                     isLightDismiss
                     isOpen={state.locationPickerOpen}
-                    onDismiss={() =>
-                        runInAction(() => {
-                            state.locationPickerOpen = true
-                        })
-                    }
+                    onDismiss={state.toggleLocationPicker}
                     type={PanelType.medium}
                     customWidth="50vw"
                     onRenderHeader={this.renderHeader}

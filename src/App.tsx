@@ -6,6 +6,7 @@ import { NavBar } from "components/navigation/navbar"
 import { ThemeProvider } from "@fluentui/react"
 import { FluentTheme } from "data/theme"
 import { GlobalContext, GlobalState } from "data/state"
+import { AuthContainer } from "components/auth/login"
 
 function App() {
     const sharedState = new GlobalState()
@@ -15,6 +16,7 @@ function App() {
                 <ThemeProvider theme={FluentTheme}>
                     <GlobalStyle />
                     <NavBar />
+                    <AuthContainer />
                     <Routes>
                         <Route path="/" element={<Home />} />
                     </Routes>

@@ -58,6 +58,11 @@ export class GlobalState {
             this.authShowing = !this.authShowing
         })
 
+    toggleLocationPicker = () =>
+        runInAction(() => {
+            this.locationPickerOpen = !this.locationPickerOpen
+        })
+
     toast({ message, autoHideDuration = 6000, type = "info" }: ToastDefinition) {
         runInAction(() => {
             this.toastMessages.set(uniqueId(), {
