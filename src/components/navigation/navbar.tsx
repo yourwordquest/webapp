@@ -83,12 +83,11 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
     render() {
         const {
             search: { loc },
+            navigate,
         } = this.props
 
         const query = loc ? `?loc=${loc}` : ""
         const state: GlobalState = this.context
-
-        const { navigate } = this.props
 
         const menuProps: IContextualMenuProps = {
             items: [
@@ -96,23 +95,13 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                     key: "about",
                     text: "About Us",
                     iconProps: { iconName: "Info" },
-                    href: `/about${query}`,
-                    onClick: (evt) => {
-                        evt?.preventDefault()
-                        evt?.stopPropagation()
-                        navigate(`/about${query}`)
-                    },
+                    onClick: () => navigate(`/about${query}`),
                 },
                 {
                     key: "contact",
                     text: "Contact Us",
                     iconProps: { iconName: "Message" },
-                    href: `/contact${query}`,
-                    onClick: (evt) => {
-                        evt?.preventDefault()
-                        evt?.stopPropagation()
-                        navigate(`/contact${query}`)
-                    },
+                    onClick: () => navigate(`/contact${query}`),
                 },
             ],
         }
@@ -122,12 +111,7 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                 key: "contribute",
                 text: "Contribute",
                 iconProps: { iconName: "CaloriesAdd" },
-                href: `/contribute${query}`,
-                onClick: (evt) => {
-                    evt?.preventDefault()
-                    evt?.stopPropagation()
-                    navigate(`/contribute${query}`)
-                },
+                onClick: () => navigate(`/contribute${query}`),
             })
 
             menuProps.items.push({
