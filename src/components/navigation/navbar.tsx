@@ -81,6 +81,11 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
     }
 
     render() {
+        const {
+            search: { loc },
+        } = this.props
+
+        const query = loc ? `?loc=${loc}` : ""
         const state: GlobalState = this.context
 
         const { navigate } = this.props
@@ -91,22 +96,22 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                     key: "about",
                     text: "About Us",
                     iconProps: { iconName: "Info" },
-                    href: "/about",
+                    href: `/about${query}`,
                     onClick: (evt) => {
                         evt?.preventDefault()
                         evt?.stopPropagation()
-                        navigate("/about")
+                        navigate(`/about${query}`)
                     },
                 },
                 {
                     key: "contact",
                     text: "Contact Us",
                     iconProps: { iconName: "Message" },
-                    href: "/contact",
+                    href: `/contact${query}`,
                     onClick: (evt) => {
                         evt?.preventDefault()
                         evt?.stopPropagation()
-                        navigate("/contact")
+                        navigate(`/contact${query}`)
                     },
                 },
             ],
@@ -117,11 +122,11 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                 key: "contribute",
                 text: "Contribute",
                 iconProps: { iconName: "CaloriesAdd" },
-                href: "/contribute",
+                href: `/contribute${query}`,
                 onClick: (evt) => {
                     evt?.preventDefault()
                     evt?.stopPropagation()
-                    navigate("/contribute")
+                    navigate(`/contribute${query}`)
                 },
             })
 
@@ -137,7 +142,7 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
             <NavBarContainer>
                 <StyleNavBar>
                     <Flex autoGrow>
-                        <Link to="/">
+                        <Link to={`/${query}`}>
                             {state.loading && <Spinner size={SpinnerSize.large} />}
                             {!state.loading && <img className="logo" src="/logo.png" alt="" />}
                         </Link>
@@ -154,7 +159,7 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                         <LocationInput minimalView={state.appWidth <= MobileBreakPoint} />
                     </Flex>
                     <Flex align="center" className="menu">
-                        <Link to="/contribute">
+                        <Link to={`/contribute${query}`}>
                             <CommandButton text="Contribute" iconProps={{ iconName: "CaloriesAdd" }} />
                         </Link>
                         <CommandButton
