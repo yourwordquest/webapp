@@ -161,10 +161,13 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
 
 export const NavBar = withRouter(RoutedNavBar)
 
-const NavBarContainer = styled.nav`
-    top: 1em;
+const NavBarContainer = styled.div`
+    top: 0;
     position: sticky;
+    padding: 1em 0.5em 0;
+    margin-bottom: 1em;
     z-index: 1000;
+    background-color: #ffffffaa;
     @media (min-width: 1400px) {
         padding-right: calc((100% - 1400px) / 2);
         padding-left: calc((100% - 1400px) / 2);
@@ -173,7 +176,6 @@ const NavBarContainer = styled.nav`
 
 const StyleNavBar = styled.nav`
     height: ${NavBarHeight};
-    margin: 1em 0.5em;
     padding: 0.4em 1em;
     border-radius: 1em;
     box-sizing: border-box;
