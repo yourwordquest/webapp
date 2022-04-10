@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { FlexColumn, Flex, Break } from "components/shared/containers"
-import { primaryColor, TitleFonts, secondaryColor } from "data/theme"
+import { primaryColor, TitleFonts, secondaryColor, MobileBreakPoint } from "data/theme"
 import { Link } from "react-router-dom"
 import { RoutedProps, withRouter } from "utils/routing"
 
@@ -13,7 +13,68 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
         const query = loc ? `?loc=${loc}` : ""
         return (
             <StyledHomeInfo>
-                <details id="why" open>
+                <details id="quest" open>
+                    <SectionTitle>The Quest</SectionTitle>
+                    <Break />
+                    <Slogan>&ldquo;The quest for accountable leadership of the world&rdquo;</Slogan>
+
+                    <p>
+                        We envision a day when quotes from our ancestors will be relevant as reminders rather than motivators;
+                        because then we won't be going through the same struggles they went through.
+                        <br />
+                        We yearn for a world where a politician is held to a higher level of accountability than a bus driver.
+                    </p>
+                    <Flex breakAt={MobileBreakPoint} equal>
+                        <FlexColumn autoGrow as="details">
+                            <summary>Scene 1: Tour Van Driver</summary>
+                            <ol>
+                                <li>Promises to drive you and your family to your dream destination in your van .</li>
+                                <li>You hire him.</li>
+                                <li>Helps his friend move with your van on the way to your destination.</li>
+                                <li>Crushes the van while arguing with other drivers on the road.</li>
+                                <li>Asks you to pay for repairs of the van.</li>
+                                <li>
+                                    While the van is in the repair shop, tells you that time is up and you need to hire him
+                                    again so that he can oversee the repairs and drive you to your dream destination
+                                </li>
+                                <li>You hire him.</li>
+                            </ol>
+                        </FlexColumn>
+                        <FlexColumn autoGrow as="details">
+                            <summary>Scene 2: A Politician</summary>
+                            <ol>
+                                <li>
+                                    Promises to increase jobs, build infrastructure and lower the cost of living across the
+                                    country.
+                                </li>
+                                <li>You vote him into office.</li>
+                                <li>
+                                    Passes tax laws and trade subsidies that favour businesses that he and his friends are
+                                    invested in.
+                                </li>
+                                <li>
+                                    The economy and infrastructure crushes because he's undecided and still consulting with
+                                    other politicians.
+                                </li>
+                                <li>He increases taxes to pay for economic recovery</li>
+                                <li>
+                                    Election time comes and he asks you to vote him in to oversee economic recovery, increase
+                                    jobs, build infrastructure and lower the cost of living across the country.
+                                </li>
+                                <li>You vote him into office.</li>
+                            </ol>
+                        </FlexColumn>
+                    </Flex>
+                    <Slogan>
+                        &ldquo;I have learned you are never too small to make a difference.&rdquo;&nbsp; - Greta Thunberg
+                    </Slogan>
+                    <p>
+                        You can participate in this quest by using information from this platform to hold your leaders into
+                        account and make better decisions when choosing your leaders.
+                    </p>
+                </details>
+
+                <details id="why">
                     <SectionTitle>The Why?</SectionTitle>
                     <Break />
                     <Slogan>
@@ -63,14 +124,6 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
                         <Link to={`/contact${query}`}>Contact Us</Link> for further details.
                     </p>
                 </details>
-
-                <details id="vision">
-                    <SectionTitle>The Vision</SectionTitle>
-                </details>
-
-                <details id="my-part">
-                    <SectionTitle>What can I do?</SectionTitle>
-                </details>
             </StyledHomeInfo>
         )
     }
@@ -93,6 +146,13 @@ const StyledHomeInfo = styled(FlexColumn)`
                 &:hover {
                     border-bottom: 1px dashed ${secondaryColor};
                 }
+            }
+        }
+        details {
+            background-color: #ffffff;
+            margin: 0.5em;
+            summary {
+                cursor: pointer;
             }
         }
     }
