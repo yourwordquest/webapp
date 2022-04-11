@@ -1,37 +1,52 @@
-import {
-    CommandButton,
-    DefaultButton,
-    Dialog,
-    DialogType,
-    IDialogContentProps,
-    PrimaryButton,
-    TextField,
-} from "@fluentui/react"
-import { Break, Flex, FlexColumn } from "components/shared/containers"
-import { GlobalContext, GlobalState } from "data/state"
-import { primaryColor, secondaryColor, TextFonts } from "data/theme"
-import { observer } from "mobx-react"
 import React from "react"
+import { observer } from "mobx-react"
 import styled from "styled-components"
-
-interface AuthContainerState {
-    view: "login" | "register"
-}
+import { Dialog, DialogType, IconButton, IDialogContentProps } from "@fluentui/react"
+import { GlobalContext, GlobalState } from "data/state"
+import { TextFonts } from "data/theme"
+import { FirebaseAuth, Props } from "react-firebaseui"
+import { getAuth, EmailAuthProvider, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth"
 
 @observer
-export class AuthContainer extends React.Component<any, AuthContainerState> {
+export class AuthContainer extends React.Component<any> {
     static contextType = GlobalContext
+
     render() {
         const state: GlobalState = this.context
         const smallView = state.appWidth <= 600
-        const { view = "login" } = this.state || {}
+
+        const props: Props = {
+            uiConfig: {
+                signInOptions: [
+                    {
+                        provider: EmailAuthProvider.PROVIDER_ID,
+                        requireDisplayName: true,
+                        signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+                    },
+                    GoogleAuthProvider.PROVIDER_ID,
+                    GithubAuthProvider.PROVIDER_ID,
+                ],
+                signInFlow: "popup",
+                callbacks: {
+                    signInSuccessWithAuthResult: () => {
+                        state.toggleAuthView()
+                        return true
+                    },
+                },
+            },
+            firebaseAuth: getAuth(),
+        }
 
         const dialog_content_props: IDialogContentProps = {
             type: DialogType.largeHeader,
-            title: <Title>Authentication</Title>,
+            title: (
+                <Title>
+                    Please sign in <IconButton onClick={state.toggleAuthView} iconProps={{ iconName: "Cancel" }} />
+                </Title>
+            ),
         }
 
-        const isRegister = view === "register"
+        // const loading = state.isLoading(AUTH_LOADING)
 
         return (
             <Dialog
@@ -41,94 +56,150 @@ export class AuthContainer extends React.Component<any, AuthContainerState> {
                 modalProps={{ isBlocking: true }}
                 minWidth={smallView ? "90vw" : "500px"}
             >
-                <FlexColumn as="form" onSubmit={(evt: React.FormEvent) => evt.preventDefault()}>
-                    <ProviderButton>
-                        <img alt="" src="assets/github_logo.png" />
-                        Authenticate With Github
-                    </ProviderButton>
-                    <ProviderButton>
-                        <img alt="" src="assets/google_logo.png" />
-                        Authenticate With Google
-                    </ProviderButton>
-                    <Break />
-                    <Flex justify="center" as="strong">
-                        Or
-                    </Flex>
-                    <Break />
-                    <Tabs equal>
-                        <Flex
-                            onClick={() => this.setState({ view: "login" })}
-                            autoGrow
-                            className={`tab ${view === "login" ? "active" : ""}`}
-                        >
-                            Login
-                        </Flex>
-                        <Flex
-                            onClick={() => this.setState({ view: "register" })}
-                            autoGrow
-                            className={`tab ${view === "register" ? "active" : ""}`}
-                        >
-                            Sign Up
-                        </Flex>
-                    </Tabs>
-                    <Break />
-                    {isRegister && <TextField label="Name" required />}
-                    <TextField label="Email Address" required type="email" />
-                    <TextField label="Password" type="password" required canRevealPassword />
-                    {isRegister && <TextField label="Confirm Password" required type="password" />}
-                    <Break />
-                    <Flex justify="space-between">
-                        <DefaultButton onClick={state.toggleAuthView} text="Close" />
-                        <PrimaryButton text={isRegister ? "Sign Up" : "Login"} type="submit" />
-                    </Flex>
-                    {!isRegister && (
-                        <Flex justify="flex-end">
-                            <CommandButton>Forgot Password?</CommandButton>
-                        </Flex>
-                    )}
-                </FlexColumn>
-                <Break />
+                <StyledFirebaseAuth {...props} />
             </Dialog>
         )
     }
 }
 
-const ProviderButton = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 0.3em 0;
-    padding: 0.5em 1em;
-    border: 1px solid #000000;
-    cursor: pointer;
-    user-select: none;
-    background-color: #ffffff;
-    img {
-        height: 18px;
-        width: auto;
-        margin-right: 0.5em;
+const StyledFirebaseAuth = styled(FirebaseAuth)`
+    .mdl-shadow--2dp {
+        box-shadow: none;
     }
-    &:hover {
-        background-color: ${primaryColor}11;
+    .mdl-shadow--3dp {
+        box-shadow: none;
+    }
+    .mdl-shadow--4dp {
+        box-shadow: none;
+    }
+    .mdl-shadow--6dp {
+        box-shadow: none;
+    }
+    .mdl-shadow--8dp {
+        box-shadow: none;
+    }
+    .mdl-shadow--16dp {
+        box-shadow: none;
+    }
+    .mdl-shadow--24dp {
+        box-shadow: none;
+    }
+
+    .mdl-spinner__layer-1 {
+        border-color: #03a9f4;
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-1 {
+        border-color: #03a9f4;
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-2 {
+        border-color: #03a9f4;
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-3 {
+        border-color: #03a9f4;
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-4 {
+        border-color: #03a9f4;
+    }
+    .mdl-button.mdl-button--colored {
+        color: #03a9f4;
+    }
+    .mdl-button--raised.mdl-button--colored {
+        background: #03a9f4;
+        color: #fff;
+    }
+    .mdl-button--raised.mdl-button--colored:hover {
+        background-color: #03a9f4;
+    }
+    .mdl-button--raised.mdl-button--colored:active {
+        background-color: #03a9f4;
+    }
+    .mdl-button--raised.mdl-button--colored:focus:not(:active) {
+        background-color: #03a9f4;
+    }
+
+    .mdl-button--primary.mdl-button--primary {
+        color: #03a9f4;
+    }
+    .mdl-button--primary.mdl-button--primary .mdl-ripple {
+        background: #fff;
+    }
+    .mdl-button--primary.mdl-button--primary.mdl-button--fab,
+    .mdl-button--primary.mdl-button--primary.mdl-button--raised {
+        color: #fff;
+        background-color: #03a9f4;
+    }
+
+    .mdl-progress > .progressbar {
+        background-color: #03a9f4;
+    }
+    .mdl-progress > .bufferbar {
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+            linear-gradient(to right, #03a9f4, #03a9f4);
+    }
+    @supports (-webkit-appearance: none) {
+        .mdl-progress:not(.mdl-progress--indeterminate):not(.mdl-progress--indeterminate) > .auxbar,
+        .mdl-progress:not(.mdl-progress__indeterminate):not(.mdl-progress__indeterminate) > .auxbar {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+                linear-gradient(to right, #03a9f4, #03a9f4);
+            mask: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjEyIiBoZWlnaHQ9IjQiIHZpZXdQb3J0PSIwIDAgMTIgNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxlbGxpcHNlIGN4PSIyIiBjeT0iMiIgcng9IjIiIHJ5PSIyIj4KICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9ImN4IiBmcm9tPSIyIiB0bz0iLTEwIiBkdXI9IjAuNnMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiAvPgogIDwvZWxsaXBzZT4KICA8ZWxsaXBzZSBjeD0iMTQiIGN5PSIyIiByeD0iMiIgcnk9IjIiIGNsYXNzPSJsb2FkZXIiPgogICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iY3giIGZyb209IjE0IiB0bz0iMiIgZHVyPSIwLjZzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgLz4KICA8L2VsbGlwc2U+Cjwvc3ZnPgo=);
+        }
+    }
+    .mdl-progress:not(.mdl-progress--indeterminate) > .auxbar,
+    .mdl-progress:not(.mdl-progress__indeterminate) > .auxbar {
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+            linear-gradient(to right, #03a9f4, #03a9f4);
+    }
+    .mdl-progress.mdl-progress--indeterminate > .bar1,
+    .mdl-progress.mdl-progress__indeterminate > .bar1 {
+        background-color: #03a9f4;
+        animation-name: indeterminate1;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+    .mdl-progress.mdl-progress--indeterminate > .bar3,
+    .mdl-progress.mdl-progress__indeterminate > .bar3 {
+        background-image: none;
+        background-color: #03a9f4;
+        animation-name: indeterminate2;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    .mdl-textfield--floating-label.has-placeholder .mdl-textfield__label,
+    .mdl-textfield--floating-label.is-dirty .mdl-textfield__label,
+    .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
+        color: #03a9f4;
+        font-size: 14px;
+    }
+
+    .mdl-textfield__label:after {
+        background-color: #03a9f4;
+    }
+
+    .firebaseui-textfield.mdl-textfield .firebaseui-label::after {
+        background-color: #03a9f4;
+    }
+
+    .firebaseui-link {
+        color: #03a9f4;
+        text-decoration: none;
     }
 `
 
 const Title = styled.div`
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-family: ${TextFonts};
-    color: ${secondaryColor};
-`
-
-const Tabs = styled(Flex)`
-    .tab {
-        padding: 0.8em 1em 0.4em;
-        cursor: pointer;
-        &:hover {
-            color: ${primaryColor};
-        }
+    color: #444444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: -26px;
+    .ms-Button {
+        border-radius: 50%;
     }
-    .active {
-        color: ${primaryColor};
-        background-color: ${primaryColor}11;
+    .ms-Button:hover {
+        color: #ff0000;
     }
-    border-bottom: 2px solid ${primaryColor};
 `

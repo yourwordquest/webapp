@@ -1,10 +1,11 @@
 import { createContext } from "react"
 import { makeAutoObservable, runInAction } from "mobx"
+import { Auth, getAuth, User } from "firebase/auth"
 import { uniqueId } from "utils/random"
 import { toNearest } from "utils/numbers"
 import { make_api_url } from "utils/routing"
 import { LocationRelations, Locations } from "./location"
-import { LOCATION_LOADING } from "app_constants"
+import { AUTH_LOADING, LOCATION_LOADING } from "app_constants"
 
 interface FetchProps extends RequestInit {
     json?: any
@@ -27,6 +28,14 @@ export class GlobalState {
     constructor() {
         makeAutoObservable(this)
 
+        this.auth = getAuth()
+
+        this.auth.onAuthStateChanged((user) => {
+            runInAction(() => {
+                this.user = user
+            })
+        })
+
         this.appWidth = toNearest(window.innerWidth, 10)
         // Observe window resize
         window.addEventListener("resize", this.handleResize.bind(this))
@@ -36,13 +45,16 @@ export class GlobalState {
         this.channel.addEventListener("message", this.receiveMessage.bind(this), true)
     }
 
+    private auth: Auth
+    user: User | null = null
+
     appWidth: number
 
     channel: BroadcastChannel
 
     toastMessages: Map<string, ToastDefinition> = new Map()
 
-    authShowing: boolean = true
+    authShowing: boolean = false
     locationPickerOpen: boolean = false
 
     locations?: Locations
@@ -125,7 +137,9 @@ export class GlobalState {
             .finally(this.promiseLoadingHelper(LOCATION_LOADING))
     }
 
-    logout(propagate?: boolean) {}
+    logout(propagate?: boolean) {
+        this.auth.signOut().finally(this.promiseLoadingHelper(AUTH_LOADING))
+    }
 
     async fetch<T = { success: boolean; message: string }>(
         path: string,

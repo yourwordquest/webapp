@@ -1,6 +1,15 @@
 import React from "react"
 import styled from "styled-components"
-import { CommandButton, IconButton, IContextualMenuProps, Spinner, SpinnerSize, TextField } from "@fluentui/react"
+import {
+    CommandButton,
+    IconButton,
+    IContextualMenuProps,
+    Persona,
+    PersonaSize,
+    Spinner,
+    SpinnerSize,
+    TextField,
+} from "@fluentui/react"
 import { Break, Flex } from "components/shared/containers"
 import { MobileBreakPoint, NavBarHeight, primaryColor } from "data/theme"
 import { Link } from "react-router-dom"
@@ -106,6 +115,35 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
             ],
         }
 
+        if (state.user) {
+            const logout_item = {
+                key: "logout",
+                text: "Logout",
+                iconProps: { iconName: "Leave" },
+                onClick: () => state.logout(),
+            }
+            if (state.appWidth <= MobileBreakPoint) {
+                menuProps.items.push({
+                    key: "account",
+                    text: "Account",
+                    iconProps: { iconName: "Contact" },
+                    subMenuProps: {
+                        items: [
+                            {
+                                key: "account-page",
+                                text: "Settings",
+                                iconProps: { iconName: "Settings" },
+                                onClick: () => navigate(`/contribute${query}`),
+                            },
+                            logout_item,
+                        ],
+                    },
+                })
+            } else {
+                menuProps.items.push(logout_item)
+            }
+        }
+
         if (state.appWidth <= MobileBreakPoint) {
             menuProps.items.unshift({
                 key: "contribute",
@@ -114,13 +152,17 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                 onClick: () => navigate(`/contribute${query}`),
             })
 
-            menuProps.items.push({
-                key: "user",
-                text: "Login/Sign Up",
-                iconProps: { iconName: "Contact" },
-                onClick: state.toggleAuthView,
-            })
+            if (state.user === null) {
+                menuProps.items.push({
+                    key: "user",
+                    text: "Login/Sign Up",
+                    iconProps: { iconName: "Contact" },
+                    onClick: state.toggleAuthView,
+                })
+            }
         }
+
+        const display_name = (state.user?.displayName || state.user?.email || "User").split(" ")[0]
 
         return (
             <NavBarContainer>
@@ -146,11 +188,18 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
                         <Link to={`/contribute${query}`}>
                             <CommandButton text="Contribute" iconProps={{ iconName: "CaloriesAdd" }} />
                         </Link>
-                        <CommandButton
-                            onClick={state.toggleAuthView}
-                            text="Login/Sign Up"
-                            iconProps={{ iconName: "Contact" }}
-                        />
+                        {state.user === null && (
+                            <CommandButton
+                                onClick={state.toggleAuthView}
+                                text="Login/Sign Up"
+                                iconProps={{ iconName: "Contact" }}
+                            />
+                        )}
+                        {state.user !== null && (
+                            <Link to={`/account${query}`}>
+                                <Persona size={PersonaSize.size24} text={display_name} imageUrl={state.user.photoURL || ""} />
+                            </Link>
+                        )}
                     </Flex>
                     <IconButton iconProps={{ iconName: "CollapseMenu" }} menuProps={menuProps} />
                 </StyleNavBar>
@@ -208,6 +257,12 @@ const StyleNavBar = styled.nav`
     @media (max-width: ${MobileBreakPoint}px) {
         .menu {
             display: none;
+        }
+    }
+
+    .ms-Persona:hover {
+        .ms-Persona-primaryText {
+            color: ${primaryColor};
         }
     }
 `
