@@ -4,7 +4,7 @@ import { uniqueId } from "utils/random"
 import { toNearest } from "utils/numbers"
 import { make_api_url } from "utils/routing"
 import { LocationRelations, Locations } from "./location"
-import { LOCATION_LOADING } from "constans"
+import { LOCATION_LOADING } from "app_constants"
 
 interface FetchProps extends RequestInit {
     json?: any
@@ -42,7 +42,7 @@ export class GlobalState {
 
     toastMessages: Map<string, ToastDefinition> = new Map()
 
-    authShowing: boolean = false
+    authShowing: boolean = true
     locationPickerOpen: boolean = false
 
     locations?: Locations

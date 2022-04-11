@@ -1,5 +1,5 @@
 import { FontIcon, Panel, PanelType, DefaultButton } from "@fluentui/react"
-import { LOCATION_LOADING } from "constans"
+import { LOCATION_LOADING } from "app_constants"
 import { flag_link } from "data/location"
 import { GlobalContext, GlobalState } from "data/state"
 import { FluentTheme, primaryColor, secondaryColor } from "data/theme"

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 import { observer } from "mobx-react"
 import { GlobalContext } from "data/state"
 import { flag_link } from "data/location"
-import { LOCATION_LOADING } from "constans"
+import { LOCATION_LOADING } from "app_constants"
 
 export const UserHome = observer(() => {
     const state = useContext(GlobalContext)

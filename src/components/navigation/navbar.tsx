@@ -9,7 +9,7 @@ import { GlobalContext, GlobalState } from "data/state"
 import { LocationInput } from "components/shared/locationInput"
 import { withRouter, RoutedProps } from "utils/routing"
 import { CCA2_CCA3 } from "data/cca_map"
-import { LOCATION_LOADING } from "constans"
+import { LOCATION_LOADING } from "app_constants"
 
 interface NavBarState {
     searchBoxOpen: boolean
