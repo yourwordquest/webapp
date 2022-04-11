@@ -6,6 +6,7 @@ import { toNearest } from "utils/numbers"
 import { make_api_url } from "utils/routing"
 import { LocationRelations, Locations } from "./location"
 import { AUTH_LOADING, LOCATION_LOADING } from "app_constants"
+import { crisp } from "utils/crisp"
 
 interface FetchProps extends RequestInit {
     json?: any
@@ -34,6 +35,9 @@ export class GlobalState {
             runInAction(() => {
                 this.user = user
             })
+            if (user) {
+                crisp.setup_profile(user.displayName || "", user.email || "", user.photoURL || "")
+            }
         })
 
         this.appWidth = toNearest(window.innerWidth, 10)
