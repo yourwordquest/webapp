@@ -7,6 +7,7 @@ import { ThemeProvider } from "@fluentui/react"
 import { FluentTheme } from "data/theme"
 import { GlobalContext, GlobalState } from "data/state"
 import { AuthContainer } from "components/auth/login"
+import { Contributions } from "components/contributions"
 
 function App() {
     const sharedState = new GlobalState()
@@ -19,6 +20,7 @@ function App() {
                     <AuthContainer />
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/contribute" element={<Contributions />} />
                     </Routes>
                 </ThemeProvider>
             </GlobalContext.Provider>
