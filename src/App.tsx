@@ -6,7 +6,7 @@ import { NavBar } from "components/navigation/navbar"
 import { ThemeProvider } from "@fluentui/react"
 import { FluentTheme } from "data/theme"
 import { GlobalContext, GlobalState } from "data/state"
-import { AuthContainer } from "components/auth/login"
+import { AuthDialog } from "components/auth/login"
 import { Contributions } from "components/contributions"
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
                 <ThemeProvider theme={FluentTheme}>
                     <GlobalStyle />
                     <NavBar />
-                    <AuthContainer />
+                    <AuthDialog />
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/contribute" element={<Contributions />} />

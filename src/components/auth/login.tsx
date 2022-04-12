@@ -1,66 +1,61 @@
-import React from "react"
+import React, { useContext } from "react"
 import { observer } from "mobx-react"
 import styled from "styled-components"
 import { Dialog, DialogType, IconButton, IDialogContentProps } from "@fluentui/react"
-import { GlobalContext, GlobalState } from "data/state"
+import { GlobalContext } from "data/state"
 import { TextFonts } from "data/theme"
 import { FirebaseAuth, Props } from "react-firebaseui"
 import { getAuth, EmailAuthProvider, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth"
 
-@observer
-export class AuthContainer extends React.Component<any> {
-    static contextType = GlobalContext
+export const AuthDialog = observer(() => {
+    const state = useContext(GlobalContext)
+    if (state === null) return null
 
-    render() {
-        const state: GlobalState = this.context
-        const smallView = state.appWidth <= 600
+    const smallView = state.appWidth <= 600
 
-        const props: Props = {
-            uiConfig: {
-                signInOptions: [
-                    {
-                        provider: EmailAuthProvider.PROVIDER_ID,
-                        requireDisplayName: true,
-                        signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
-                    },
-                    GoogleAuthProvider.PROVIDER_ID,
-                    GithubAuthProvider.PROVIDER_ID,
-                ],
-                signInFlow: "popup",
-                callbacks: {
-                    signInSuccessWithAuthResult: () => {
-                        state.toggleAuthView()
-                        return true
-                    },
+    const props: Props = {
+        uiConfig: {
+            signInOptions: [
+                {
+                    provider: EmailAuthProvider.PROVIDER_ID,
+                    requireDisplayName: true,
+                    signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+                },
+                GoogleAuthProvider.PROVIDER_ID,
+                GithubAuthProvider.PROVIDER_ID,
+            ],
+            signInFlow: "popup",
+            callbacks: {
+                signInSuccessWithAuthResult: () => {
+                    state.toggleAuthView()
+                    return true
                 },
             },
-            firebaseAuth: getAuth(),
-        }
-
-        const dialog_content_props: IDialogContentProps = {
-            type: DialogType.largeHeader,
-            title: (
-                <Title>
-                    Please sign in <IconButton onClick={state.toggleAuthView} iconProps={{ iconName: "Cancel" }} />
-                </Title>
-            ),
-        }
-
-        // const loading = state.isLoading(AUTH_LOADING)
-
-        return (
-            <Dialog
-                hidden={!state.authShowing}
-                onDismiss={state.toggleAuthView}
-                dialogContentProps={dialog_content_props}
-                modalProps={{ isBlocking: true }}
-                minWidth={smallView ? "90vw" : "500px"}
-            >
-                <StyledFirebaseAuth {...props} />
-            </Dialog>
-        )
+        },
+        firebaseAuth: getAuth(),
     }
-}
+
+    const dialog_content_props: IDialogContentProps = {
+        type: DialogType.largeHeader,
+        title: (
+            <Title>
+                Please sign in <IconButton onClick={state.toggleAuthView} iconProps={{ iconName: "Cancel" }} />
+            </Title>
+        ),
+    }
+
+    return (
+        <Dialog
+            hidden={!state.authShowing}
+            onDismiss={state.toggleAuthView}
+            dialogContentProps={dialog_content_props}
+            modalProps={{ isBlocking: true }}
+            minWidth={smallView ? "90vw" : "500px"}
+        >
+            <StyledFirebaseAuth {...props} />
+        </Dialog>
+    )
+})
 
 const StyledFirebaseAuth = styled(FirebaseAuth)`
     .mdl-shadow--2dp {
