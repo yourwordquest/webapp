@@ -28,37 +28,37 @@ const contrib_items: ContribItem[] = [
         "promise",
         "A Promise",
         "A promise made by a leader in representation of self, a company or organization.",
-        ""
+        "assets/promise.svg"
     ),
     contrib_item(
         "event",
         "An Event",
         "An event that happened and is meaningful to certain promises people or organizations.",
-        ""
+        "/assets/event.svg"
     ),
     contrib_item(
         "location",
         "Location Details",
         "A location that we don't have in our database or updated information regarding the location.",
-        ""
+        "/assets/location.svg"
     ),
     contrib_item(
         "person",
         "Person Details",
         "An influential person not in our database or updated information regarding them.",
-        ""
+        "/assets/person.svg"
     ),
     contrib_item(
         "org",
         "Organization Details",
         "An influential organization not in our database or updated information regarding them.",
-        ""
+        "/assets/org.svg"
     ),
     contrib_item(
         "office",
         "Office Details",
         "An office belongs to an organization and is occupied by a person, you can provide information about a new office or an update to an existing one.",
-        ""
+        "/assets/office.svg"
     ),
 ]
 
@@ -111,6 +111,7 @@ class RoutedContributions extends React.Component<RoutedProps<any, { loc?: strin
                                             className="radio"
                                             iconName={contrib_item === item.key ? "RadioBtnOn" : "RadioBtnOff"}
                                         />
+                                        <img alt="" src={item.icon} />
                                         <FlexColumn autoGrow>
                                             <div className="title">{item.title}</div>
                                             <small>{item.description}</small>
@@ -205,8 +206,14 @@ const ContributionOptions = styled(FlexColumn)`
             margin-right: 0.5em;
             font-size: 1.3em;
         }
+        img {
+            height: 32px;
+            width: auto;
+            margin-right: 1em;
+            fill: ${primaryColor};
+        }
         &:hover {
-            background-color: ${primaryColor}11;
+            background-color: 11;
         }
         &.selected {
             border: 1px solid ${primaryColor};
