@@ -1,3 +1,4 @@
+import { uniqueId } from "utils/random"
 import { OtherData } from "./common"
 
 export interface Location {
@@ -13,7 +14,7 @@ export interface Location {
 
 export function NewLocation(): Location {
     return {
-        LocationId: "",
+        LocationId: uniqueId(),
         Name: "",
         Code: "",
         Intro: "",
