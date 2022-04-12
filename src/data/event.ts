@@ -1,4 +1,5 @@
-import { SupportingContent } from "./common"
+import { uniqueId } from "utils/random"
+import { OtherData, SupportingContent } from "./common"
 
 export interface Event {
     EventId: string
@@ -8,6 +9,20 @@ export interface Event {
     StartDate: string
     EndDate: string
     Status: "Pending" | "Canceled" | "Executed"
-    SupportingContent: SupportingContent
-    OtherData: string
+    SupportingContent: SupportingContent[]
+    OtherData: OtherData
+}
+
+export function NewEvent(): Event {
+    return {
+        EventId: uniqueId(),
+        Name: "",
+        Detail: "",
+        AnnouncementDate: "",
+        StartDate: "",
+        EndDate: "",
+        Status: "Pending",
+        SupportingContent: [],
+        OtherData: {},
+    }
 }

@@ -1,12 +1,26 @@
+import { OtherData } from "./common"
+
 export interface Location {
     LocationId: string
     Name: string
     Code: string
     Intro: string
     Narrative: string
-    OtherData: { [key: string]: { type: string; payload: any } }
+    OtherData: OtherData
     Status: "Active" | "InActive"
     LocationType?: string
+}
+
+export function NewLocation(): Location {
+    return {
+        LocationId: "",
+        Name: "",
+        Code: "",
+        Intro: "",
+        Narrative: "",
+        OtherData: {},
+        Status: "Active",
+    }
 }
 
 export interface LocationRelations {

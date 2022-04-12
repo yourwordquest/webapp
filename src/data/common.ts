@@ -4,3 +4,5 @@ export interface SupportingContent {
     description: string
     metadata: object
 }
+
+export type OtherData = { [key: string]: { type: string; payload: any } }
