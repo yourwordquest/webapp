@@ -8,7 +8,7 @@ import { NewPromise, Promise } from "./promise"
 
 export type ContributionType = "promise" | "person" | "event" | "location" | "office" | "org"
 export const contribution_types: ContributionType[] = ["event", "location", "office", "org", "person", "promise"]
-export type ContributionStatus = "draft" | "submitted" | "review" | "accepted"
+export type ContributionStatus = "draft" | "submitted" | "has-recommendations" | "review" | "accepted" | "rejected"
 
 export interface Contribution {
     id: string
