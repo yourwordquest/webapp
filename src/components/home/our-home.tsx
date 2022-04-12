@@ -19,11 +19,17 @@ export const OurHome = observer(() => {
             <Break size={1} />
 
             <Content>
-                In a world full of broken promises, we aim to restore the hope of a better future by making sure that:
+                We want to rekindle hope for a better future in a world full of broken promises by ensuring that:
                 <ul>
-                    <li>Promises don't get lost in our news cycles</li>
-                    <li>Words can be associated with their original source</li>
-                    <li>We provide actionable information to the public</li>
+                    <li>Promises aren't forgotten in the shuffle of daily news cycles.</li>
+                    <li>
+                        Promises can be linked to their original source, the time they were made, and when they were/will be
+                        delivered.
+                    </li>
+                    <li>
+                        We provide the public with actionable information that can aid in the election of new leaders and hold
+                        current leaders accountable.
+                    </li>
                 </ul>
             </Content>
         </FlexColumn>

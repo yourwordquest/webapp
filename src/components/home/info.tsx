@@ -19,10 +19,11 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
                     <Slogan>&ldquo;The quest for accountable leadership of the world&rdquo;</Slogan>
 
                     <p>
-                        We envision a day when quotes from our ancestors will be relevant as reminders rather than motivators;
+                        We envision a time when quotes from our ancestors will serve as reminders rather than motivators;
                         because then we won't be going through the same struggles they went through.
                         <br />
-                        We yearn for a world where a politician is held to a higher level of accountability than a bus driver.
+                        We yearn for a world where a politician is held to a greater standard of accountability than a bus
+                        driver.
                     </p>
                     <Flex breakAt={MobileBreakPoint} equal>
                         <FlexColumn autoGrow as="details">
@@ -69,8 +70,8 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
                         &ldquo;I have learned you are never too small to make a difference.&rdquo;&nbsp; - Greta Thunberg
                     </Slogan>
                     <p>
-                        You can participate in this quest by using information from this platform to hold your leaders into
-                        account and make better decisions when choosing your leaders.
+                        You can help in this quest by using the information on this platform to keep your leaders accountable
+                        and make informed decisions while electing new leaders.
                     </p>
                 </details>
 
@@ -82,14 +83,14 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
                         the world&rsquo;s problems.&rdquo;&nbsp;- Mahatma Gandhi
                     </Slogan>
                     <p>
-                        Our leaders make promises to us on a daily basis; promises that should change our lives for the better;
-                        and then they go ahead and break those promises. With elections being seasonal, it's hard to keep track
-                        the promises broken over the years, and the same leader goes back to the office again in a never ending
-                        cycle.
+                        Our leaders make promises to us on a daily basis, promises that should improve lives, and then never
+                        follow through those promises. Elections are seasonal which makes it hard to keep track the promises
+                        broken over the years. The same leader repeats the same promises they made and they're elected back to
+                        office again in a never ending cycle.
                     </p>
                     <p>
-                        The why is; to put a value on the promises that our leaders make to us. A public project management
-                        system that can be used to review the performance of our leaders.
+                        The reason to have this project is to put a value on the promises that our leaders make to us. A public
+                        project management system that may be utilized to assess our leaders' performance.
                     </p>
                 </details>
 
@@ -100,11 +101,11 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
                         <Flex>&ldquo;Without community, there is no liberation.&rdquo;&nbsp;- Audre Lorde</Flex>
                     </Slogan>
                     <p>
-                        One man's effort cannot see this project through; this is a community driven project where the public
-                        provides the data that drives this platform.
+                        This project cannot be maintained by any single person; it is a community-driven project in which the
+                        public provides the data that drives the platform.
                     </p>
                     <p>
-                        We've already seen this model work well for{" "}
+                        This model has previously proven to be effective in the past for{" "}
                         <a href="https://wikipedia.org" target="_blank" rel="noreferrer">
                             Wikipedia
                         </a>
@@ -112,11 +113,11 @@ class RoutedHomeInfo extends React.Component<RoutedProps> {
                         <a href="https://archive.org" target="_blank" rel="noreferrer">
                             Internet Archive, The Way Back Machine
                         </a>{" "}
-                        and not forget all the open source software that we interact with on a daily basis.
+                        not to mention all of the open source software we use on a daily basis.
                     </p>
                     <p>
                         Any one can contribute by simply visiting the <Link to={`/contribute${query}`}>Contribute</Link>{" "}
-                        section. Other contributions can be monetary or time by contributing to our code on{" "}
+                        section. Other contributions can be monetary or in the form of time spent working on our code on{" "}
                         <a href="https://github.com/yourwordquest" target="_blank" rel="noreferrer">
                             github
                         </a>{" "}
