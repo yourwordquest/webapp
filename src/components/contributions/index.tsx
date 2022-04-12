@@ -2,9 +2,8 @@ import React from "react"
 import styled from "styled-components"
 import { Break, ConstrainedBody, Flex, FlexColumn } from "components/shared/containers"
 import { MobileBreakPoint, primaryColor, TitleFonts } from "data/theme"
-import { CommandButton, PrimaryButton, Text } from "@fluentui/react"
+import { PrimaryButton, Text } from "@fluentui/react"
 import { GlobalContext, GlobalState } from "data/state"
-import { AuthContainer } from "components/auth/login"
 import { observer } from "mobx-react"
 
 interface ContributionsState {
