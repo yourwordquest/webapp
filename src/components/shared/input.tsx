@@ -8,22 +8,22 @@ interface EditorProps {
     onChange?: (value: string) => void
     value?: string
     placeholder?: string
-    label?: string
+    description?: string
 }
 
 export function Editor(props: EditorProps) {
     const modules: any = {
         toolbar: [
-            [{ header: [1, 2, false] }],
+            [{ header: [1, 2, 3, false] }],
             ["bold", "italic", "underline", "strike", "blockquote"],
-            [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+            [{ list: "ordered" }, { list: "bullet" }],
             ["link", "image"],
         ],
     }
 
     return (
         <StyledEditor>
-            <label>{props.label}</label>
+            <label>{props.description}</label>
             <ReactQuill
                 theme="snow"
                 value={props.value}
@@ -32,6 +32,9 @@ export function Editor(props: EditorProps) {
                     if (props.onChange) {
                         props.onChange(content)
                     }
+                }}
+                onBlur={() => {
+                    console.log(props.value)
                 }}
                 modules={modules}
                 preserveWhitespace
@@ -43,8 +46,7 @@ export function Editor(props: EditorProps) {
 const StyledEditor = styled(FlexColumn)`
     label {
         color: #444444;
-        font-weight: 600;
-        line-height: 1.5em;
+        font-size: 1.5em;
     }
     .quill {
         background-color: #ffffff;
