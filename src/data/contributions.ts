@@ -1,11 +1,14 @@
+import {
+    EVENT_CONTRIBUTION_TEMPLATE,
+    LOCATION_CONTRIBUTION_TEMPLATE,
+    OFFICE_CONTRIBUTION_TEMPLATE,
+    ORGANIZATION_CONTRIBUTION_TEMPLATE,
+    PERSON_CONTRIBUTION_TEMPLATE,
+    PROMISE_CONTRIBUTION_TEMPLATE,
+} from "app_constants"
 import { observable } from "mobx"
 import { uniqueId } from "utils/random"
-import { Event, NewEvent } from "./event"
-import { Location, NewLocation } from "./location"
-import { NewOffice, Office } from "./office"
-import { NewOrganization, Organization } from "./organization"
-import { NewPerson, Person } from "./person"
-import { NewPromise, Promise } from "./promise"
+import { epoch } from "utils/time"
 
 export type ContributionType = "promise" | "person" | "event" | "location" | "office" | "org"
 export const contribution_types: ContributionType[] = ["event", "location", "office", "org", "person", "promise"]
@@ -13,57 +16,59 @@ export type ContributionStatus = "draft" | "submitted" | "has-recommendations" |
 
 export interface Contribution {
     id: string
-    is_update: boolean
-    original_id: string
     title: string
     type: ContributionType
     status: ContributionStatus
-    details: Location | Office | Event | Person | Organization | Promise
-    edges: { type: string; detail: string }[]
-    attached: Contribution[]
-    notes: string
+    details: string
+    date_added: number
+    date_accepted: number
+    events: { time: number; event: string }[]
+    archived: boolean
+    email_permission: boolean
+    name_permission: boolean
 }
 
 export function NewObservableContribution(contrib_type: ContributionType): Contribution {
-    let details: Location | Office | Event | Person | Organization | Promise
+    let details: string
     let title: string
     switch (contrib_type) {
         case "promise":
-            details = NewPromise()
+            details = PROMISE_CONTRIBUTION_TEMPLATE
             title = "New Promise"
             break
         case "event":
-            details = NewEvent()
+            details = EVENT_CONTRIBUTION_TEMPLATE
             title = "New Event"
             break
         case "location":
-            details = NewLocation()
+            details = LOCATION_CONTRIBUTION_TEMPLATE
             title = "New Location"
             break
         case "person":
-            details = NewPerson()
+            details = PERSON_CONTRIBUTION_TEMPLATE
             title = "Introduce Person"
             break
         case "office":
-            details = NewOffice()
+            details = OFFICE_CONTRIBUTION_TEMPLATE
             title = "New Office"
             break
         case "org":
-            details = NewOrganization()
+            details = ORGANIZATION_CONTRIBUTION_TEMPLATE
             title = "New Organization"
             break
     }
 
     return observable({
         id: uniqueId(),
-        is_update: false,
-        original_id: "",
         title,
         type: contrib_type,
         status: "draft",
         details,
-        edges: [],
-        attached: [],
-        notes: "",
+        date_added: epoch(new Date()),
+        date_accepted: 0,
+        events: [{ time: epoch(new Date()), event: "Created contribution" }],
+        archived: false,
+        email_permission: false,
+        name_permission: false,
     })
 }

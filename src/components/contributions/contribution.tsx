@@ -1,5 +1,5 @@
 import React from "react"
-import { Breadcrumb, DefaultButton, IBreadcrumbItem, PrimaryButton, Text, TextField } from "@fluentui/react"
+import { Breadcrumb, Checkbox, DefaultButton, IBreadcrumbItem, PrimaryButton, Text, TextField } from "@fluentui/react"
 import { ConstrainedBody, FlexColumn, Flex, Break } from "components/shared/containers"
 import { Editor } from "components/shared/input"
 import { Contribution, ContributionType, contribution_types, NewObservableContribution } from "data/contributions"
@@ -7,19 +7,7 @@ import { Lambda, observe } from "mobx"
 import { observer } from "mobx-react"
 import styled from "styled-components"
 import { RoutedProps, withRouter } from "utils/routing"
-import { EventContribution } from "./event"
-import { Event } from "data/event"
-import { LocationContribution } from "./location"
-import { Location } from "data/location"
-import { OfficeContribution } from "./office"
-import { Office } from "data/office"
-import { OrganizationContribution } from "./organization"
-import { Organization } from "data/organization"
-import { PersonContribution } from "./person"
-import { Person } from "data/person"
-import { PromiseContribution } from "./promise"
-import { Promise } from "data/promise"
-import { primaryColor } from "data/theme"
+import { MobileBreakPoint, primaryColor } from "data/theme"
 import { set_observable } from "utils/object"
 
 interface ContributionState {
@@ -84,29 +72,28 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
         return (
             <StyledBody maxWidth={1400}>
                 <Breadcrumb items={items} />
-
+                <TextField
+                    label="Subject"
+                    value={this.contribution.title}
+                    onChange={(evt, value) => set_observable(this.contribution, "title", value)}
+                />
+                <small>Helps you and other user's easily identify this contribution</small>
+                <Break />
                 <FlexColumn>
-                    <Flex className="dual-input">
-                        <TextField
-                            label="Subject"
-                            value={this.contribution.title}
-                            onChange={(evt) => set_observable(this.contribution, "title", evt.currentTarget.value)}
-                        />
-                    </Flex>
+                    <Break />
+                    <Editor
+                        description="Add details below"
+                        placeholder="type here..."
+                        value={this.contribution.details}
+                        onChange={(value) => set_observable(this.contribution, "details", value)}
+                    />
 
-                    {this.contribution.type === "event" && <EventContribution event={this.contribution.details as Event} />}
-                    {this.contribution.type === "location" && (
-                        <LocationContribution location={this.contribution.details as Location} />
-                    )}
-                    {this.contribution.type === "office" && <OfficeContribution office={this.contribution.details as Office} />}
-                    {this.contribution.type === "org" && (
-                        <OrganizationContribution organization={this.contribution.details as Organization} />
-                    )}
-                    {this.contribution.type === "person" && <PersonContribution person={this.contribution.details as Person} />}
-                    {this.contribution.type === "promise" && (
-                        <PromiseContribution promise={this.contribution.details as Promise} />
-                    )}
-                    <Editor label="Notes" value={this.contribution.notes} placeholder="Write your notes here..." />
+                    <Break />
+                    <Flex justify="flex-end" breakAt={MobileBreakPoint}>
+                        <Checkbox label="Show my name when displaying publicly" />
+                        <Break />
+                        <Checkbox label="You can email me on matters regarding this contribution" />
+                    </Flex>
                     <Break />
                     <Flex justify="flex-end">
                         <DefaultButton
@@ -117,6 +104,7 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
                         <Break />
                         <PrimaryButton text="Submit" />
                     </Flex>
+                    <Break size={5} />
                 </FlexColumn>
             </StyledBody>
         )

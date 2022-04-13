@@ -22,7 +22,8 @@ export const Flex = styled.div<FlexProps>`
         .ms-TextField,
         .ms-DatePicker,
         .ms-ComboBox-container,
-        .ms-Dropdown-container {
+        .ms-Dropdown-container,
+        .ms-Checkbox {
             flex-grow: 1;
             flex-basis: 0;
         }
