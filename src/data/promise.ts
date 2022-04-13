@@ -5,11 +5,11 @@ export interface Promise {
     PromiseId: string
     Summary: string
     Detail: string
-    PromisedOn: string
-    ExpectedDelivery: string
-    DeliveredOn: string
+    PromisedOn: number
+    ExpectedDelivery: number
+    DeliveredOn: number
     SupportingContent: SupportingContent[]
-    Status: "Tentative" | "Promised" | "InProgress" | "Delivered" | "Broken"
+    Status: "Tentative" | "Promised" | "InProgress" | "Delivered" | "Broken" | "Invalidated"
     OtherData: OtherData
 }
 
@@ -18,9 +18,9 @@ export function NewPromise(): Promise {
         PromiseId: uniqueId(),
         Summary: "",
         Detail: "",
-        PromisedOn: "",
-        ExpectedDelivery: "",
-        DeliveredOn: "",
+        PromisedOn: 0,
+        ExpectedDelivery: 0,
+        DeliveredOn: 0,
         SupportingContent: [],
         Status: "Tentative",
         OtherData: {},
