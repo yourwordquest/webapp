@@ -3,7 +3,6 @@ import styled from "styled-components"
 import ReactQuill from "react-quill"
 import { FlexColumn } from "./containers"
 import "react-quill/dist/quill.snow.css"
-import "react-quill/dist/quill.bubble.css"
 
 interface EditorProps {
     onChange?: (value: string) => void
