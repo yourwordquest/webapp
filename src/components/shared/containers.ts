@@ -19,10 +19,12 @@ export const Flex = styled.div<FlexProps>`
     box-sizing: border-box;
 
     &.dual-input {
-        .ms-TextField {
+        .ms-TextField,
+        .ms-DatePicker,
+        .ms-ComboBox-container,
+        .ms-Dropdown-container {
             flex-grow: 1;
             flex-basis: 0;
-            margin: 0.5em;
         }
     }
 

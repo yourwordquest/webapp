@@ -46,5 +46,7 @@ const StyledEditor = styled(FlexColumn)`
         font-weight: 600;
         line-height: 1.5em;
     }
-    margin: 0.5em;
+    .quill {
+        background-color: #ffffff;
+    }
 `
