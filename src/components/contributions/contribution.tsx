@@ -1,9 +1,10 @@
+import React from "react"
 import { Breadcrumb, DefaultButton, IBreadcrumbItem, PrimaryButton, Text, TextField } from "@fluentui/react"
 import { ConstrainedBody, FlexColumn, Flex, Break } from "components/shared/containers"
 import { Editor } from "components/shared/input"
 import { Contribution, ContributionType, contribution_types, NewObservableContribution } from "data/contributions"
+import { Lambda, observe } from "mobx"
 import { observer } from "mobx-react"
-import React from "react"
 import styled from "styled-components"
 import { RoutedProps, withRouter } from "utils/routing"
 import { EventContribution } from "./event"
@@ -23,11 +24,13 @@ import { set_observable } from "utils/object"
 
 interface ContributionState {
     new_contrib_state: "unknown" | "searching" | "new"
+    has_change: boolean
 }
 
 @observer
 class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { loc?: string }>, ContributionState> {
     contribution?: Contribution
+    dispose_observer?: Lambda
     componentDidMount() {
         const {
             params: { id },
@@ -35,11 +38,19 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
         const contrib_type = id as any as ContributionType
         if (contribution_types.includes(contrib_type)) {
             this.contribution = NewObservableContribution(contrib_type)
-
+            this.dispose_observer = observe(this.contribution, (change) => {
+                this.setState({ has_change: true })
+            })
             // Mobx hasn't kicked in yet.
             this.forceUpdate()
         } else {
             // TODO: Load contribution saved in the backend
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.dispose_observer) {
+            this.dispose_observer()
         }
     }
 
@@ -51,6 +62,8 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
                 </StyledBody>
             )
         }
+
+        const { has_change } = this.state || {}
 
         const {
             navigate,
@@ -64,7 +77,9 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
             { text: this.contribution.title, key: "contribution" },
         ]
 
-        setPrompt("You'll loose unsaved changes. Do you want to continue?")
+        if (has_change) {
+            setPrompt(`You'll lose changes made to ${this.contribution.title}. Do you want to continue?`)
+        }
 
         return (
             <StyledBody maxWidth={1400}>
@@ -73,7 +88,7 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
                 <FlexColumn>
                     <Flex className="dual-input">
                         <TextField
-                            label="Title"
+                            label="Subject"
                             value={this.contribution.title}
                             onChange={(evt) => set_observable(this.contribution, "title", evt.currentTarget.value)}
                         />
@@ -94,7 +109,11 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
                     <Editor label="Notes" value={this.contribution.notes} placeholder="Write your notes here..." />
                     <Break />
                     <Flex justify="flex-end">
-                        <DefaultButton style={{ border: `1px solid ${primaryColor}`, color: primaryColor }} text="Save" />
+                        <DefaultButton
+                            disabled={!has_change}
+                            style={has_change ? { border: `1px solid ${primaryColor}`, color: primaryColor } : undefined}
+                            text="Save"
+                        />
                         <Break />
                         <PrimaryButton text="Submit" />
                     </Flex>
