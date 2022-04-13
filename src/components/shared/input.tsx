@@ -42,7 +42,8 @@ export function Editor(props: EditorProps) {
 
 const StyledEditor = styled(FlexColumn)`
     label {
-        font-weight: bold;
+        color: #444444;
+        font-weight: 600;
         line-height: 1.5em;
     }
     margin: 0.5em;
