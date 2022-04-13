@@ -51,7 +51,7 @@ const contrib_items: ContribItem[] = [
     contrib_item(
         "org",
         "Organization Details",
-        "An influential organization not in our database or updated information regarding them.",
+        "An organization not in our database or updated information regarding them.",
         "/assets/org.svg"
     ),
     contrib_item(

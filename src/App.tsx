@@ -8,7 +8,7 @@ import { FluentTheme } from "data/theme"
 import { GlobalContext, GlobalState } from "data/state"
 import { AuthDialog } from "components/auth/login"
 import { Contributions } from "components/contributions"
-import { Contribution } from "components/contributions/contribution"
+import { ContributionComponent } from "components/contributions/contribution"
 
 function App() {
     const sharedState = new GlobalState()
@@ -22,7 +22,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/contribute" element={<Contributions />} />
-                        <Route path="/contribute/:id" element={<Contribution />} />
+                        <Route path="/contribute/:id" element={<ContributionComponent />} />
                     </Routes>
                 </ThemeProvider>
             </GlobalContext.Provider>

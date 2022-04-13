@@ -1,3 +1,4 @@
+import { observable } from "mobx"
 import { uniqueId } from "utils/random"
 import { Event, NewEvent } from "./event"
 import { Location, NewLocation } from "./location"
@@ -23,7 +24,7 @@ export interface Contribution {
     notes: string
 }
 
-export function NewContribution(contrib_type: ContributionType): Contribution {
+export function NewObservableContribution(contrib_type: ContributionType): Contribution {
     let details: Location | Office | Event | Person | Organization | Promise
     let title: string
     switch (contrib_type) {
@@ -53,7 +54,7 @@ export function NewContribution(contrib_type: ContributionType): Contribution {
             break
     }
 
-    return {
+    return observable({
         id: uniqueId(),
         is_update: false,
         original_id: "",
@@ -64,5 +65,5 @@ export function NewContribution(contrib_type: ContributionType): Contribution {
         edges: [],
         attached: [],
         notes: "",
-    }
+    })
 }
