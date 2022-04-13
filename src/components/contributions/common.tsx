@@ -12,7 +12,7 @@ export function ContributionItem({ title, children }: { title: string; children:
 }
 
 const StyledItem = styled(FlexColumn)`
-    background-color: #f1f1f1;
+    background-color: #eeeeee;
     padding: 1em 0.5em;
     margin: 1em 0;
     border-radius: 1em;
