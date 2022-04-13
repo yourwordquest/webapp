@@ -1,5 +1,6 @@
 import { Breadcrumb, IBreadcrumbItem, Text, TextField } from "@fluentui/react"
-import { ConstrainedBody, FlexColumn } from "components/shared/containers"
+import { ConstrainedBody, FlexColumn, Flex } from "components/shared/containers"
+import { Editor } from "components/shared/input"
 import { Contribution, ContributionType, contribution_types, NewObservableContribution } from "data/contributions"
 import { observer } from "mobx-react"
 import React from "react"
@@ -50,7 +51,10 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
             <StyledBody maxWidth={1400}>
                 <Breadcrumb items={items} />
                 <FlexColumn>
-                    <TextField label="Title" />
+                    <Flex className="dual-input">
+                        <TextField label="Title" />
+                    </Flex>
+                    <Editor label="Notes" value={this.contribution.notes} placeholder="Write your notes here..." />
                 </FlexColumn>
             </StyledBody>
         )

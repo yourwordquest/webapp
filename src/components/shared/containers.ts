@@ -18,6 +18,14 @@ export const Flex = styled.div<FlexProps>`
     flex-grow: ${(props) => (props.equal || props.autoGrow ? "1" : "initial")};
     box-sizing: border-box;
 
+    &.dual-input {
+        .ms-TextField {
+            flex-grow: 1;
+            flex-basis: 0;
+            margin: 0.5em;
+        }
+    }
+
     @media (max-width: ${({ breakAt }) => (breakAt ? breakAt : 0)}px) {
         flex-direction: column;
     }
