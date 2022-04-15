@@ -33,9 +33,6 @@ export function Editor(props: EditorProps) {
                         props.onChange(content)
                     }
                 }}
-                onBlur={() => {
-                    console.log(props.value)
-                }}
                 modules={modules}
                 preserveWhitespace
             />
