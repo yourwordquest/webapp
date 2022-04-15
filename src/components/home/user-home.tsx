@@ -14,7 +14,7 @@ export const UserHome = observer(() => {
     const state = useContext(GlobalContext)
     if (state === null) return null
 
-    let location_name = state.locations?.current.Name || ""
+    let location_name = state.locations?.current.name || ""
     if (state.isLoading(LOCATION_LOADING)) {
         location_name = "Loading..."
     }

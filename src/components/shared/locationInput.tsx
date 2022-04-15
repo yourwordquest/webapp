@@ -21,7 +21,7 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
 
     renderHeader = () => {
         const state: GlobalState = this.context
-        let name = state.locations?.current.Name || ""
+        let name = state.locations?.current.name || ""
         const flag = flag_link(state.locations?.current)
         if (state.isLoading(LOCATION_LOADING)) {
             name = "Loading..."
@@ -42,7 +42,7 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
     render() {
         const state: GlobalState = this.context
         const { minimalView } = this.props
-        let name = state.locations?.current.Name || ""
+        let name = state.locations?.current.name || ""
         const flag = flag_link(state.locations?.current)
         if (state.isLoading(LOCATION_LOADING)) {
             name = "Loading..."
@@ -81,9 +81,9 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
                                 <Break />
                                 <div className="parents">
                                     {state.locations?.parents.map((loc) => (
-                                        <LocationPill key={loc.LocationId} to={`?loc=${loc.LocationId}`}>
+                                        <LocationPill key={loc.id} to={`?loc=${loc.id}`}>
                                             <img alt="" src={flag_link(loc)} />
-                                            {loc.Name}
+                                            {loc.name}
                                         </LocationPill>
                                     ))}
                                 </div>
@@ -96,9 +96,9 @@ class RoutedLocationInput extends React.Component<LocationInputProps> {
                                 <Break />
                                 <div className="children">
                                     {state.locations?.children_by_type[locType].map((loc) => (
-                                        <LocationPill key={loc.LocationId} to={`?loc=${loc.LocationId}`}>
+                                        <LocationPill key={loc.id} to={`?loc=${loc.id}`}>
                                             <img alt="" src={flag_link(loc)} />
-                                            {loc.Name}
+                                            {loc.name}
                                         </LocationPill>
                                     ))}
                                 </div>

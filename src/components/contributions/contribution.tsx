@@ -1,5 +1,14 @@
 import React from "react"
-import { Breadcrumb, Checkbox, DefaultButton, IBreadcrumbItem, PrimaryButton, Text, TextField } from "@fluentui/react"
+import {
+    Breadcrumb,
+    Checkbox,
+    DefaultButton,
+    IBreadcrumbItem,
+    PrimaryButton,
+    TeachingBubble,
+    Text,
+    TextField,
+} from "@fluentui/react"
 import { ConstrainedBody, FlexColumn, Flex, Break } from "components/shared/containers"
 import { Editor } from "components/shared/input"
 import { Contribution, ContributionType, contribution_types, NewObservableContribution } from "data/contributions"
@@ -9,14 +18,17 @@ import styled from "styled-components"
 import { RoutedProps, withRouter } from "utils/routing"
 import { MobileBreakPoint, primaryColor } from "data/theme"
 import { set_observable } from "utils/object"
+import { GlobalContext, GlobalState } from "data/state"
 
 interface ContributionState {
     new_contrib_state: "unknown" | "searching" | "new"
     has_change: boolean
+    show_submit: boolean
 }
 
 @observer
 class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { loc?: string }>, ContributionState> {
+    static contextType = GlobalContext
     contribution?: Contribution
     dispose_observer?: Lambda
     componentDidMount() {
@@ -42,6 +54,14 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
         }
     }
 
+    save(submit: boolean) {
+        const state: GlobalState = this.context
+        if (!state.user) {
+            state.toggleAuthView()
+            return
+        }
+    }
+
     render() {
         if (!this.contribution) {
             return (
@@ -51,7 +71,7 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
             )
         }
 
-        const { has_change } = this.state || {}
+        const { has_change, show_submit } = this.state || {}
 
         const {
             navigate,
@@ -73,7 +93,7 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
             <StyledBody maxWidth={1400}>
                 <Breadcrumb items={items} />
                 <TextField
-                    label="Subject"
+                    label="Title"
                     value={this.contribution.title}
                     onChange={(evt, value) => set_observable(this.contribution, "title", value)}
                 />
@@ -100,10 +120,28 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
                             disabled={!has_change}
                             style={has_change ? { border: `1px solid ${primaryColor}`, color: primaryColor } : undefined}
                             text="Save"
+                            onClick={() => this.save(false)}
                         />
                         <Break />
-                        <PrimaryButton text="Submit" />
+                        <PrimaryButton
+                            onClick={() => this.setState({ show_submit: true })}
+                            id="submit-contribution"
+                            text="Submit"
+                        />
                     </Flex>
+                    {show_submit && (
+                        <TeachingBubble
+                            hasCloseButton
+                            hasSmallHeadline
+                            onDismiss={() => this.setState({ show_submit: false })}
+                            target="#submit-contribution"
+                            headline="Do your want to submit your contribution for review?"
+                            primaryButtonProps={{ text: "Submit", onClick: () => this.save(true) }}
+                            secondaryButtonProps={{ text: "Save Draft", onClick: () => this.save(false) }}
+                        >
+                            Please save a draft if not done editing
+                        </TeachingBubble>
+                    )}
                     <Break size={5} />
                 </FlexColumn>
             </StyledBody>

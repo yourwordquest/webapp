@@ -1,27 +1,16 @@
-import { uniqueId } from "utils/random"
 import { OtherData } from "./common"
 
 export interface Location {
-    LocationId: string
-    Name: string
-    Code: string
-    Intro: string
-    Narrative: string
-    OtherData: OtherData
-    Status: "Active" | "InActive"
-    LocationType?: string
-}
-
-export function NewLocation(): Location {
-    return {
-        LocationId: uniqueId(),
-        Name: "",
-        Code: "",
-        Intro: "",
-        Narrative: "",
-        OtherData: {},
-        Status: "Active",
-    }
+    id: string
+    name: string
+    code: string
+    govType: string
+    intro: string
+    narrative: string
+    other: OtherData
+    status: "Active" | "InActive"
+    classification: string
+    parents: string[]
 }
 
 export interface LocationRelations {
@@ -45,11 +34,11 @@ export class Locations {
         const response: { [type: string]: Location[] } = {}
         for (let i = 0; i < this.children.length; i++) {
             const location = this.children[i]
-            if (!location.LocationType) continue
-            if (!response[location.LocationType]) {
-                response[location.LocationType] = []
+            if (!location.classification) continue
+            if (!response[location.classification]) {
+                response[location.classification] = []
             }
-            response[location.LocationType].push(location)
+            response[location.classification].push(location)
         }
         return response
     }
@@ -58,9 +47,9 @@ export class Locations {
 export function flag_link(location?: Location): string {
     let flag = "/assets/Simple_Globe.svg"
 
-    if (!location || !location.OtherData || !location.OtherData.flag) {
+    if (!location || !location.other || !location.other.flag) {
         return flag
     }
 
-    return location.OtherData.flag.payload
+    return location.other.flag.payload
 }
