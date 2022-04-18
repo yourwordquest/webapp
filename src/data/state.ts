@@ -40,7 +40,7 @@ export class GlobalState {
             }
         })
 
-        this.auth.onIdTokenChanged((use)=>{
+        this.auth.onIdTokenChanged((use) => {
             console.log(use)
         })
 
@@ -72,7 +72,7 @@ export class GlobalState {
     }
 
     get is_admin(): boolean {
-        if(!this.user){
+        if (!this.user) {
             return false
         }
         return Boolean(this.user.metadata)

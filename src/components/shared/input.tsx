@@ -3,6 +3,8 @@ import styled from "styled-components"
 import ReactQuill from "react-quill"
 import { FlexColumn } from "./containers"
 import "react-quill/dist/quill.snow.css"
+import { DefaultButton } from "@fluentui/react"
+import { primaryColor } from "data/theme"
 
 interface EditorProps {
     onChange?: (value: string) => void
@@ -48,4 +50,9 @@ const StyledEditor = styled(FlexColumn)`
     .quill {
         background-color: #ffffff;
     }
+`
+
+export const OutlinedPrimaryButton = styled(DefaultButton)`
+    border: 1px solid ${primaryColor};
+    color: ${primaryColor};
 `
