@@ -1,5 +1,7 @@
 import React from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import { Home } from "components/home"
 import { GlobalStyle } from "styles"
 import { NavBar } from "components/navigation/navbar"
@@ -24,6 +26,7 @@ function App() {
                         <Route path="/contribute" element={<Contributions />} />
                         <Route path="/contribute/:id" element={<ContributionComponent />} />
                     </Routes>
+                    <ToastContainer />
                 </ThemeProvider>
             </GlobalContext.Provider>
         </BrowserRouter>

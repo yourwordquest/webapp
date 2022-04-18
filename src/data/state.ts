@@ -1,12 +1,12 @@
 import { createContext } from "react"
 import { makeAutoObservable, runInAction } from "mobx"
 import { Auth, getAuth, User } from "firebase/auth"
-import { uniqueId } from "utils/random"
 import { toNearest } from "utils/numbers"
 import { make_api_url } from "utils/routing"
 import { LocationRelations, Locations } from "./location"
 import { AUTH_LOADING, LOCATION_LOADING } from "app_constants"
 import { crisp } from "utils/crisp"
+import { toast, TypeOptions } from "react-toastify"
 
 interface FetchProps extends RequestInit {
     json?: any
@@ -20,7 +20,7 @@ interface FetchProps extends RequestInit {
 }
 
 interface ToastDefinition {
-    type?: "error" | "warning" | "info" | "success"
+    type?: TypeOptions
     message: string
     autoHideDuration?: number
 }
@@ -40,6 +40,10 @@ export class GlobalState {
             }
         })
 
+        this.auth.onIdTokenChanged((use)=>{
+            console.log(use)
+        })
+
         this.appWidth = toNearest(window.innerWidth, 10)
         // Observe window resize
         window.addEventListener("resize", this.handleResize.bind(this))
@@ -56,8 +60,6 @@ export class GlobalState {
 
     channel: BroadcastChannel
 
-    toastMessages: Map<string, ToastDefinition> = new Map()
-
     authShowing: boolean = false
     locationPickerOpen: boolean = false
 
@@ -67,6 +69,13 @@ export class GlobalState {
 
     get loading(): boolean {
         return this.loadingItems.length > 0
+    }
+
+    get is_admin(): boolean {
+        if(!this.user){
+            return false
+        }
+        return Boolean(this.user.metadata)
     }
 
     toggleAuthView = () =>
@@ -80,12 +89,10 @@ export class GlobalState {
         })
 
     toast({ message, autoHideDuration = 6000, type = "info" }: ToastDefinition) {
-        runInAction(() => {
-            this.toastMessages.set(uniqueId(), {
-                message,
-                autoHideDuration,
-                type,
-            })
+        toast(message, {
+            type,
+            position: "bottom-center",
+            autoClose: autoHideDuration,
         })
     }
 
@@ -145,10 +152,7 @@ export class GlobalState {
         this.auth.signOut().finally(this.promiseLoadingHelper(AUTH_LOADING))
     }
 
-    async fetch<T = { success: boolean; message: string }>(
-        path: string,
-        props?: FetchProps
-    ): Promise<{ response?: Response; data?: T }> {
+    async fetch<T = { title: string }>(path: string, props?: FetchProps): Promise<{ response?: Response; data?: T }> {
         let headers = props?.headers
         let body = props?.body
         const method = props?.method ? props.method : "GET"
@@ -166,6 +170,12 @@ export class GlobalState {
         if (!body && props?.json) {
             body = JSON.stringify(props.json)
             headers.set("Content-Type", "application/json")
+        }
+
+        // Add auth
+        if (this.user) {
+            const token = await this.user.getIdToken()
+            headers.set("Authorization", `Bearer ${token}`)
         }
 
         try {
@@ -187,14 +197,14 @@ export class GlobalState {
                 data = await response.json()
             }
             if ((props?.toastMessage || props?.toastError) && data) {
-                const { success, message } = data as {
-                    success: boolean
-                    message: string
+                const success = response.ok
+                const { title } = data as {
+                    title: string
                 }
                 if (props?.toastMessage) {
-                    this.toast({ message, type: success ? "success" : "error" })
+                    this.toast({ message: title, type: success ? "success" : "error" })
                 } else if (props?.toastError && !success) {
-                    this.toast({ message, type: "success" })
+                    this.toast({ message: title, type: "error" })
                 }
             }
             return { response, data }
