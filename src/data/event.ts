@@ -8,9 +8,10 @@ export interface Event {
     AnnouncementDate: string
     StartDate: string
     EndDate: string
-    Status: "Pending" | "Canceled" | "Executed"
+    Status: "Pending" | "Canceled" | "Completed"
     SupportingContent: SupportingContent[]
     OtherData: OtherData
+    Clarity?: number
 }
 
 export function NewEvent(): Event {
