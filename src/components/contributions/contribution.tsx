@@ -60,6 +60,13 @@ class RoutedContribution extends React.Component<RoutedProps<{ id: string }, { l
             state.toggleAuthView()
             return
         }
+
+        state.fetch("/contribution", {
+            load: true,
+            method: "PUT",
+            json: this.contribution,
+            toastMessage: true,
+        })
     }
 
     render() {

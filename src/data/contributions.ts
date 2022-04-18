@@ -26,6 +26,8 @@ export interface Contribution {
     archived: boolean
     email_permission: boolean
     name_permission: boolean
+    user_id?: boolean
+    user_name?: boolean
 }
 
 export function NewObservableContribution(contrib_type: ContributionType): Contribution {
