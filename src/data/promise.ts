@@ -13,7 +13,7 @@ export interface Promise {
     OtherData: OtherData
 }
 
-interface PromiseAggregation {
+export interface PromiseAggregation {
     tentative: number
     promised: number
     in_progress: number
@@ -22,7 +22,7 @@ interface PromiseAggregation {
     invalidated: number
 }
 
-interface PromisesRequest {
+export interface PromisesRequest {
     promise_ids: string[]
     other_promises: { [list_name: string]: string[] }
     promises_map: { [promise_id: string]: Promise }

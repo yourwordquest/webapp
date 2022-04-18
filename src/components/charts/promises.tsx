@@ -3,23 +3,19 @@ import styled from "styled-components"
 import { Cell, Pie, PieChart, Tooltip } from "recharts"
 import { Break, Flex, FlexColumn } from "components/shared/containers"
 import { primaryColor, promiseColors } from "data/theme"
+import { PromiseAggregation } from "data/promise"
 
 interface PromisesPieChartProps {
-    data: {
-        broken: number
-        delivered: number
-        pending: number
-        inProgress: number
-    }
+    data: PromiseAggregation
     height: number
 }
 
 export function PromiseStats({ data, height }: PromisesPieChartProps) {
-    const total = data.delivered + data.broken + data.inProgress + data.pending
+    const total = data.delivered + data.broken + data.in_progress + data.promised
     const chartData: { name: string; value: number; color: string }[] = [
         { name: "Promises Delivered", value: data.delivered, color: promiseColors.delivered },
-        { name: "Promises In Progress", value: data.inProgress, color: promiseColors.inProgress },
-        { name: "Promises Pending", value: data.pending, color: promiseColors.pending },
+        { name: "Promises In Progress", value: data.in_progress, color: promiseColors.inProgress },
+        { name: "Promises Pending", value: data.promised, color: promiseColors.pending },
         { name: "Promises Broken", value: data.broken, color: promiseColors.broken },
     ]
 
@@ -39,7 +35,7 @@ export function PromiseStats({ data, height }: PromisesPieChartProps) {
             <FlexColumn autoGrow justify="space-around">
                 <PromiseStat color={primaryColor} percentage={100}>
                     <label>
-                        <strong>1078</strong> Known Promises
+                        <strong>{total + data.tentative + data.invalidated}</strong> Known Promises
                     </label>
                 </PromiseStat>
                 {chartData.map((item) => (
