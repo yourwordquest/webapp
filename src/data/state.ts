@@ -40,10 +40,6 @@ export class GlobalState {
             }
         })
 
-        this.auth.onIdTokenChanged((use) => {
-            console.log(use)
-        })
-
         this.appWidth = toNearest(window.innerWidth, 10)
         // Observe window resize
         window.addEventListener("resize", this.handleResize.bind(this))
