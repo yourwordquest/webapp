@@ -42,35 +42,34 @@ class RoutedPromisesView extends React.Component<Props, State> {
         const {
             params: { type, id },
         } = this.props
-        if (type === "location") {
-            this.loadLocation(id)
-        }
-    }
 
-    loadLocation(id: string) {
         const state: GlobalState = this.context
         state
-            .fetch<PromisesRequest>(`/promises/location/${id}`, { toastError: true })
+            .fetch<PromisesRequest>(`/promises/${type}/${id}`, { toastError: true })
             .then(({ data }) => {
                 if (!data) {
                     this.setState({ promises: undefined })
                     return
                 }
-                const promises = new Promises(data, ["children"])
-                this.setState({ promises })
+                let include: string[] = []
+                if (type === "location") {
+                    include = ["children"]
+                }
+                const promises = new Promises(data, include)
+                this.setState({ promises, title: data.title, description: data.title })
             })
             .finally(state.promiseLoadingHelper(PROMISES_LOADING))
     }
 
     render() {
-        const { promises } = this.state || {}
+        const { promises, title = "loading...", description = "" } = this.state || {}
         const state: GlobalState = this.context
         const promises_loading = state.isLoading(PROMISES_LOADING)
         const on_mobile = state.appWidth <= MobileBreakPoint
         return (
             <ConstrainedBody maxWidth={1400}>
-                <Banner>Now looking at a location</Banner>
-
+                <Banner>{title}</Banner>
+                <Text variant="mediumPlus">{description}</Text>
                 <Flex>
                     <FlexColumn autoGrow justify="flex-start">
                         {promises_loading && (
