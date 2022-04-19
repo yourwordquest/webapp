@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-interface FlexProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+export interface FlexProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     justify?: "flex-start" | "flex-end" | "center" | "space-between" | "space-around"
     align?: "flex-start" | "flex-end" | "center" | "stretch"
     equal?: boolean

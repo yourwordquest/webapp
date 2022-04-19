@@ -55,4 +55,8 @@ const StyledEditor = styled(FlexColumn)`
 export const OutlinedPrimaryButton = styled(DefaultButton)`
     border: 1px solid ${primaryColor};
     color: ${primaryColor};
+    &:hover {
+        color: ${primaryColor};
+        background-color: ${primaryColor}22;
+    }
 `

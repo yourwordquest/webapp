@@ -69,6 +69,7 @@ export class UserHome extends React.Component<any, UserHomeState> {
         const { promises } = this.state || {}
 
         const promises_loading = state.isLoading("loading-home-promises") || location_loading
+        const query = state.locations ? `?loc=${state.locations.current.id}` : ""
 
         return (
             <FlexColumn autoGrow centerAt={MobileBreakPoint} justify="flex-start">
@@ -88,9 +89,9 @@ export class UserHome extends React.Component<any, UserHomeState> {
 
                 {!promises_loading && (
                     <Flex justify={state.appWidth <= MobileBreakPoint ? "center" : "flex-end"}>
-                        <Link to={`/location/${state.locations?.current.id}`}>
+                        <Link to={`/promises/location/${state.locations?.current.id}${query}`}>
                             <OutlinedPrimaryButton>
-                                Show promises for <strong>{location_name}</strong> in detail
+                                Show promises for &nbsp;<strong>{location_name}</strong>&nbsp; in detail
                             </OutlinedPrimaryButton>
                         </Link>
                     </Flex>
