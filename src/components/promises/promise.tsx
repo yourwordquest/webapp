@@ -119,7 +119,7 @@ class RoutedPromiseComponent extends React.Component<Props, State> {
                     <FlexColumn align="center">
                         <span>to</span>
                         {locations.map((loc) => (
-                            <Link key={loc.id} to={`/promises/office/${loc.id}`}>
+                            <Link key={loc.id} to={`/promises/location/${loc.id}`}>
                                 -&nbsp;{loc.name}
                             </Link>
                         ))}
