@@ -38,6 +38,8 @@ export interface PromiseByItem {
 }
 
 export interface PromisesRequest {
+    title: string
+    description: string
     promise_ids: string[]
     other_promises: { [list_name: string]: string[] }
     promises_map: { [promise_id: string]: Promise }
