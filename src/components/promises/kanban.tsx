@@ -16,7 +16,7 @@ export const PromisesKanban = observer((props: { promises: Promises }) => {
     return (
         <StyledContainer>
             <Flex equal breakAt={MobileBreakPoint}>
-                <Column as={is_narrow ? "details" : "div"} color={primaryColor}>
+                <Column as={is_narrow ? "details" : "div"} color={primaryColor} open>
                     <Header as={is_narrow ? "summary" : "div"}>
                         <strong>{tentative.length}&nbsp;</strong>Might Be
                     </Header>
@@ -48,7 +48,7 @@ export const PromisesKanban = observer((props: { promises: Promises }) => {
                         <EmptyMessage query={query} has_data={Boolean(promised.length)} />
                     </Content>
                 </Column>
-                <Column as={is_narrow ? "details" : "div"} color={promiseColors.inProgress}>
+                <Column as={is_narrow ? "details" : "div"} color={promiseColors.inProgress} open>
                     <Header as={is_narrow ? "summary" : "div"}>
                         <strong>{in_progress.length}&nbsp;</strong>In Progress
                     </Header>
@@ -64,7 +64,7 @@ export const PromisesKanban = observer((props: { promises: Promises }) => {
                         <EmptyMessage query={query} has_data={Boolean(in_progress.length)} />
                     </Content>
                 </Column>
-                <Column as={is_narrow ? "details" : "div"} color={promiseColors.delivered}>
+                <Column as={is_narrow ? "details" : "div"} color={promiseColors.delivered} open>
                     <Header as={is_narrow ? "summary" : "div"}>
                         <strong>{delivered.length}&nbsp;</strong>Delivered
                     </Header>
@@ -80,7 +80,7 @@ export const PromisesKanban = observer((props: { promises: Promises }) => {
                         <EmptyMessage query={query} has_data={Boolean(delivered.length)} />
                     </Content>
                 </Column>
-                <Column as={is_narrow ? "details" : "div"} color={promiseColors.broken}>
+                <Column as={is_narrow ? "details" : "div"} color={promiseColors.broken} open>
                     <Header as={is_narrow ? "summary" : "div"}>
                         <strong>{broken.length}&nbsp;</strong>Broken
                     </Header>
@@ -144,7 +144,7 @@ function PromiseView({ promise, promise_by, query }: { promise: Promise; promise
                 {promise.Summary}
             </div>
             <div className="people">
-                {promise_by.map((pb) => (
+                {promise_by?.map((pb) => (
                     <Link key={pb.id} to={`/promises/${pb.type}/${pb.id}${query}`}>
                         <Persona text={pb.name} size={PersonaSize.size8} />
                     </Link>
@@ -189,6 +189,7 @@ const Column = styled(FlexColumn)<ColumnProps>`
     flex-grow: 1;
     flex-basis: 0;
     background-color: ${(p) => p.color}44;
+    padding-bottom: 1em;
     ${Header} {
         background-color: ${(p) => p.color};
     }
