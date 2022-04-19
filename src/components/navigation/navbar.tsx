@@ -19,6 +19,7 @@ import { LocationInput } from "components/shared/locationInput"
 import { withRouter, RoutedProps } from "utils/routing"
 import { CCA2_CCA3 } from "data/cca_map"
 import { LOCATION_LOADING } from "app_constants"
+import { Location } from "data/location"
 
 interface NavBarState {
     searchBoxOpen: boolean
@@ -62,11 +63,10 @@ class RoutedNavBar extends React.Component<RoutedProps<any, { loc?: string }>, N
         if (loc) {
             // Avoid loading a non-existent location
             state
-                .fetch<{ success: boolean }>(`/location/${loc}/check`.toLocaleLowerCase())
-                .then(({ data }) => {
-                    if (data && data.success) {
-                        // Load the location set on URL
-                        state.setLocation(loc.toLocaleLowerCase())
+                .fetch<Location>(`/location/${loc}`.toLocaleLowerCase())
+                .then(({ data, response }) => {
+                    if (response?.ok && data) {
+                        state.setLocation(data.id)
                         return
                     }
                     load_based_on_ip_location()
