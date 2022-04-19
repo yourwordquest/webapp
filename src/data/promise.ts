@@ -22,10 +22,26 @@ export interface PromiseAggregation {
     invalidated: number
 }
 
+export interface GroupedPromises {
+    tentative: Promise[]
+    promised: Promise[]
+    in_progress: Promise[]
+    delivered: Promise[]
+    broken: Promise[]
+    invalidated: Promise[]
+}
+
+export interface PromiseByItem {
+    id: string
+    name: string
+    type: "person"
+}
+
 export interface PromisesRequest {
     promise_ids: string[]
     other_promises: { [list_name: string]: string[] }
     promises_map: { [promise_id: string]: Promise }
+    promise_by_map: { [promise_id: string]: PromiseByItem[] }
 }
 
 export class Promises {
@@ -33,6 +49,7 @@ export class Promises {
     other_promises: { [list_name: string]: string[] }
     promises_map: { [promise_id: string]: Promise }
     include: string[]
+    promise_by_map: { [promise_id: string]: PromiseByItem[] }
 
     constructor(result: PromisesRequest, include: string[]) {
         makeAutoObservable(this)
@@ -40,6 +57,7 @@ export class Promises {
         this.other_promises = result.other_promises
         this.promises_map = result.promises_map
         this.include = include
+        this.promise_by_map = result.promise_by_map
     }
 
     get promises(): Promise[] {
@@ -48,38 +66,55 @@ export class Promises {
             const ids_list = this.other_promises[this.include[i]]
             if (ids_list) ids_to_include.push(...ids_list)
         }
-        return ids_to_include.map((promise_id) => this.promises_map[promise_id])
+        return ids_to_include.map((promise_id) => {
+            const promise = this.promises_map[promise_id]
+            promise.PromiseId = promise_id
+            return promise
+        })
     }
 
     get aggregated_promises(): PromiseAggregation {
-        let tentative = 0,
-            promised = 0,
-            in_progress = 0,
-            delivered = 0,
-            broken = 0,
-            invalidated = 0
+        const grouped = this.grouped_promises
+
+        return {
+            tentative: grouped.tentative.length,
+            promised: grouped.promised.length,
+            in_progress: grouped.in_progress.length,
+            delivered: grouped.delivered.length,
+            broken: grouped.broken.length,
+            invalidated: grouped.invalidated.length,
+        }
+    }
+
+    get grouped_promises(): GroupedPromises {
+        const tentative = [],
+            promised = [],
+            in_progress = [],
+            delivered = [],
+            broken = [],
+            invalidated = []
 
         const promises = this.promises
 
         for (let i = 0; i < promises.length; i++) {
             switch (promises[i].Status) {
                 case "Tentative":
-                    tentative += 1
+                    tentative.push(promises[i])
                     break
                 case "Promised":
-                    promised += 1
+                    promised.push(promises[i])
                     break
                 case "InProgress":
-                    in_progress += 1
+                    in_progress.push(promises[i])
                     break
                 case "Delivered":
-                    delivered += 1
+                    delivered.push(promises[i])
                     break
                 case "Broken":
-                    broken += 1
+                    broken.push(promises[i])
                     break
                 case "Invalidated":
-                    invalidated += 1
+                    invalidated.push(promises[i])
                     break
             }
         }
