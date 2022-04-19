@@ -8,9 +8,10 @@ import { PromiseAggregation } from "data/promise"
 interface PromisesPieChartProps {
     data: PromiseAggregation
     height: number
+    hide_bars?: boolean
 }
 
-export function PromiseStats({ data, height }: PromisesPieChartProps) {
+export function PromiseStats({ data, height, hide_bars }: PromisesPieChartProps) {
     const total = data.delivered + data.broken + data.in_progress + data.promised
     const chartData: { name: string; value: number; color: string }[] = [
         { name: "Promises Delivered", value: data.delivered, color: promiseColors.delivered },
@@ -32,21 +33,23 @@ export function PromiseStats({ data, height }: PromisesPieChartProps) {
                 </PieChart>
             </Flex>
             <Break />
-            <FlexColumn autoGrow justify="space-around">
-                <PromiseStat color={primaryColor} percentage={100}>
-                    <label>
-                        <strong>{total + data.tentative + data.invalidated}</strong> Known Promises
-                    </label>
-                </PromiseStat>
-                {chartData.map((item) => (
-                    <PromiseStat key={item.name} percentage={(item.value / total) * 100} color={item.color}>
+            {!hide_bars && (
+                <FlexColumn autoGrow justify="space-around">
+                    <PromiseStat color={primaryColor} percentage={100}>
                         <label>
-                            <strong>{item.value}</strong>
-                            {item.name}
+                            <strong>{total + data.tentative + data.invalidated}</strong> Known Promises
                         </label>
                     </PromiseStat>
-                ))}
-            </FlexColumn>
+                    {chartData.map((item) => (
+                        <PromiseStat key={item.name} percentage={(item.value / total) * 100} color={item.color}>
+                            <label>
+                                <strong>{item.value}</strong>
+                                {item.name}
+                            </label>
+                        </PromiseStat>
+                    ))}
+                </FlexColumn>
+            )}
         </StyledPromiseContainer>
     )
 }

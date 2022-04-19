@@ -11,6 +11,7 @@ import { GlobalContext, GlobalState } from "data/state"
 import { AuthDialog } from "components/auth/login"
 import { Contributions } from "components/contributions"
 import { ContributionComponent } from "components/contributions/contribution"
+import { PromiseView } from "components/promises"
 
 function App() {
     const sharedState = new GlobalState()
@@ -25,6 +26,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/contribute" element={<Contributions />} />
                         <Route path="/contribute/:id" element={<ContributionComponent />} />
+                        <Route path="/promises/:type/:id" element={<PromiseView />} />
                     </Routes>
                     <ToastContainer />
                 </ThemeProvider>
