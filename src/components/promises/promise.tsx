@@ -73,7 +73,7 @@ class RoutedPromiseComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { promise, people } = this.state || {}
+        const { promise, people, offices, locations, events, sources } = this.state || {}
         const state: GlobalState = this.context
         const promises_loading = state.isLoading(PROMISES_LOADING)
         const on_mobile = state.appWidth <= MobileBreakPoint
@@ -95,18 +95,72 @@ class RoutedPromiseComponent extends React.Component<Props, State> {
 
         return (
             <ConstrainedBody maxWidth={1400}>
-                <Banner>Promise</Banner>
+                <Banner style={{ textAlign: "center" }}>Promise</Banner>
                 <Summary>
-                    <Flex>{promise.Summary}</Flex>
+                    <Flex justify="center" style={{ textAlign: "center" }}>
+                        {promise.Summary}
+                    </Flex>
+                    <Break />
                     <Flex justify="center">
                         {people.map((person) => (
-                            <Link to={`/promises/person/${person.PersonId}`}>-&nbsp;{person.Name}</Link>
+                            <Link key={person.PersonId} to={`/promises/person/${person.PersonId}`}>
+                                -&nbsp;{person.Name}
+                            </Link>
                         ))}
                     </Flex>
+                    <Flex justify="center">
+                        {offices.map((office) => (
+                            <Link key={office.OfficeId} to={`/promises/office/${office.OfficeId}`}>
+                                -&nbsp;{office.Name}
+                            </Link>
+                        ))}
+                    </Flex>
+
+                    <FlexColumn align="center">
+                        <span>to</span>
+                        {locations.map((loc) => (
+                            <Link key={loc.id} to={`/promises/office/${loc.id}`}>
+                                -&nbsp;{loc.name}
+                            </Link>
+                        ))}
+                    </FlexColumn>
                 </Summary>
-                <Flex>
-                    <FlexColumn autoGrow justify="center"></FlexColumn>
-                </Flex>
+
+                {Boolean(sources.length) && (
+                    <ItemsBox>
+                        <Title>Sources</Title>
+                        {sources.map((source) => (
+                            <Item>
+                                <a href={source.Link} target="_blank" rel="noreferrer">
+                                    {source.Title}
+                                </a>
+                                <Break size={0.5} />
+                                <Flex>
+                                    <label>{source.SourceType}</label>
+                                    <Break />
+                                    <label>{source.SourceItemDate}</label>
+                                </Flex>
+                            </Item>
+                        ))}
+                    </ItemsBox>
+                )}
+
+                {Boolean(events.length) && (
+                    <ItemsBox>
+                        <Title>Events</Title>
+                        {events.map((event) => (
+                            <Item>
+                                <Text>{event.Name}</Text>
+                                <Break size={0.5} />
+                                <Flex>
+                                    <label>From {event.StartDate}</label>
+                                    <Break />
+                                    <label>To {event.EndDate}</label>
+                                </Flex>
+                            </Item>
+                        ))}
+                    </ItemsBox>
+                )}
 
                 {on_mobile && <Break size={5} />}
             </ConstrainedBody>
@@ -116,6 +170,27 @@ class RoutedPromiseComponent extends React.Component<Props, State> {
 
 export const PromiseComponent = withRouter(RoutedPromiseComponent)
 
+const ItemsBox = styled(FlexColumn)`
+    background-color: #f1f1f1;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0.6em;
+`
+
+const Title = styled.div`
+    font-size: 1.5em;
+`
+
+const Item = styled.div`
+    background-color: #ffffff;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border-radius: 0.4em;
+    label {
+        color: #777777;
+    }
+`
+
 const Banner = styled.div`
     display: flex;
     color: ${primaryColor};
@@ -124,19 +199,21 @@ const Banner = styled.div`
     font-style: oblique;
     align-items: center;
     margin-bottom: 16px;
+    justify-content: center;
     img {
         margin-right: 5px;
         height: 40px;
     }
 `
 
-const Summary = styled.div`
+const Summary = styled(FlexColumn)`
     color: ${secondaryColor};
     font-family: ${TitleFonts};
     font-size: 1.5em;
     font-style: oblique;
     a {
         color: ${secondaryColor};
+        font-size: 0.8em;
         &:hover {
             text-decoration: underline;
         }
