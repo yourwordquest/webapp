@@ -139,7 +139,7 @@ interface ColumnProps extends FlexProps {
 
 function PromiseView({ promise, promise_by, query }: { promise: Promise; promise_by: PromiseByItem[]; query: string }) {
     return (
-        <StyledPromise as={Link} to={`/promise/${promise.PromiseId}`}>
+        <StyledPromise as={Link} to={`/promise/${promise.PromiseId}${query}`}>
             <div className="summary" title={promise.Summary}>
                 {promise.Summary}
             </div>
